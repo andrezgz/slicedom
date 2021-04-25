@@ -147,6 +147,7 @@ At some point, she reaches a point where she wants to integrate. The first part 
 If Scarlett is fortunate, merging in Violet's code will be a clean merge, if not she'll have some conflicts to deal with. These may be textual conflicts, most of which the source control system can handle automatically. But semantic conflicts are much harder to deal with, and this is where [Self Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html) is very handy.
 
 The merge and (possible) conflicts are marked with an alarming lump of yellow.
+
 ![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-006.png)
 
 At this point she has successfully pulled mainline into her codeline, but to finish integrating she must push her changes into the mainline. Unless she does this, everyone else on the team will be isolated from her changes - essentially not integrating. Integration is both a pull and a push - only once Scarlett has pushed is her work integrated with the rest of the project.
