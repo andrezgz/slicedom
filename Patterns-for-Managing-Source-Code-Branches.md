@@ -27,17 +27,17 @@ A source code control system records every change made to each branch as commit.
 
 I define a **branch** as a particular sequence of commits to the code base. The **head**, or **tip**, of a branch is the latest commit in that sequence.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches.png)
 
 The verb, "to branch" it to create a new branch, which we can also think of as splitting the original branch into two. Branches merge when commits from one branch are applied to another.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-001.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-001.png)
 
 After cloning a git repository, two developers check out the master branch. They are both working on "master", but their commits are independent of each other and will need to be merged when they push their changes back to the shared repository.
 
 Yf Scarlett decides she's not sure about the changes that she's made, so she tags the last commit and resets her master branch to origin/master (the last commit she cloned from the shared repository).
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-002.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-002.png)
 
 According to the definition of branch I gave earlier, Scarlett and Violet are working on separate branches, both separate from each other, and separate from the master branch on the shared repository. When Scarlett puts aside her work with a tag, it's still a branch according to my definition (and she may well think of it as a branch), but in git's parlance it's a tagged line of code.
 
@@ -59,7 +59,7 @@ With source code: branching is easy, merging is harder. Source control systems t
 
 Jonny LeRoy likes to [point out this flaw](https://twitter.com/jahnnie/status/937917022247120898) in how people (including me) draw branching diagrams
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches.jpg)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches.jpg)
 
 The problem is familiar to anyone who has worked with **concurrent or distributed computing**. We have some shared state (the code base) with developers making updates in parallel. We need to somehow combine these by serializing the changes into some consensus update. Our task is made more complicated by the fact that getting a system to execute and run correctly implies very complex validity criteria for that shared state. Humans need to find the consensus, and that consensus may involve mixing choice parts of different updates. Often consensus can only be reached with original updates to resolve the conflicts.
 
@@ -132,26 +132,26 @@ A mainline gives a clear definition of what the current state of the teams' soft
 
 Scarlett clones the mainline, switches to the master branch, and pulls master into her repo. She can then work locally, making commits into her local master.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-003.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-003.png)
 
 Violet pushes some changes onto mainline. Scarlett can be oblivious to those changes while she works on her own task.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-004.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-004.png)
 
 At some point, she reaches a point where she wants to integrate. The first part of this is to fetch the current state of mainline into her local master branch, this will pull in Violet's changes. As she's working on local master, the commits will show on origin/master as a separate codeline.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-005.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-005.png)
 
 ==In general people use the word "merge" whenever they talk about bringing branches together, whether they actually use a git merge or rebase operation==. We'll consider "merge" to be the logical task that can be implemented with either. There's a whole other discussion on whether to use vanilla merges, use or avoid fast-forward merges, or use rebasing.
 
 If Scarlett is fortunate, merging in Violet's code will be a clean merge, if not she'll have some conflicts to deal with. These may be textual conflicts, most of which the source control system can handle automatically. But semantic conflicts are much harder to deal with, and this is where [Self Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html) is very handy.
 
 The merge and (possible) conflicts are marked with an alarming lump of yellow.
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-006.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-006.png)
 
 At this point she has successfully pulled mainline into her codeline, but to finish integrating she must push her changes into the mainline. Unless she does this, everyone else on the team will be isolated from her changes - essentially not integrating. Integration is both a pull and a push - only once Scarlett has pushed is her work integrated with the rest of the project.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-007.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-007.png)
 
 Many teams require a code review step before commit is added to mainline - a pattern I call [Reviewed Commits](https://martinfowler.com/articles/branching-patterns.html#reviewed-commits).
 
@@ -173,13 +173,13 @@ With feature branching, developers open a branch when they begin work on a featu
 
 Scarlett begins with the current stable version of the product, she'll pull mainline into her local repository and then create a new branch starting at the tip of the current mainline. She works on the feature for as long as it takes, making a series of commits to that local branch.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-008.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-008.png)
 
 She might push that branch to the project repo so that others may look at her changes.
 
 From time to time she may pull from mainline so she can tell if any changes there are likely to impact her feature.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-009.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-009.png)
 
 This isn't "integration", since she didn't push back to mainline. At this point only she is seeing her work, others don't.
 
@@ -187,7 +187,7 @@ Some teams like to ensure all code is kept in the shared repository. Scarlett wo
 
 When she's done working on the feature, she'll then perform [Mainline Integration](https://martinfowler.com/articles/branching-patterns.html#mainline-integration) to incorporate the feature into the product.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-010.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-010.png)
 
 If Scarlett works on ==more than one feature at the same time, she'll open a separate branch for each one==.
 
@@ -205,26 +205,26 @@ How often we do integration has a remarkably powerful effect on how a team opera
 
 Scarlett and Vilolet begin by cloning the mainline into their branches, then doing a couple of local commits that they don't want to push yet.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-011.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-011.png)
 
 As they work, someone else puts a commit onto mainline.
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-012.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-012.png)
 
 This team works by keeping a healthy branch and pulling from mainline after each commit. So Scarlett now needs to pull M1, merging commits S1..3 with M1.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-013.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-013.png)
 Violet needs to do the same thing.
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-014.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-014.png)
 
 At this point both developers are up to date with mainline, but they haven't integrated since they are both isolated from each other.
 
 Scarlett makes a couple more local commits then is ready to do mainline integration. This is an easy push for her, since she pulled M1 earlier.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-015.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-015.png)
 
 Violet, however has a more complicated merge. When she does mainline integration she now has to integrate S1..5 with V1..6.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-016.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-016.png)
 
 ### High-Frequency Integration
 
@@ -232,35 +232,35 @@ In the previous example, our two colorful developers integrated after a handful 
 
 The first change is apparent with Violet's very first commit, as she integrates right away. Since mainline hasn't changed, this is a simple push.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-017.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-017.png)
 
 Scarlett's first commit also has mainline integration, but because Violet got there first, she needs do a merge. But since she's only merging V1 with S1, the merge is small.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-018.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-018.png)
 
 Scarlett's next integration is a simple push which means Violet's next commit will also require merging with Scarlett's latest two commits. However it's still a pretty small merge, one of Violet's and two of Scarlett's.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-019.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-019.png)
 
 When the external push to mainline appears, it gets picked up in the usual rhythm of Scarlett and Violet's integrations.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-020.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-020.png)
 
 ==While it's similar to what happened before, the integrations are smaller, even the final one, when the feature is complete.== Scarlett only has to integrate S3 with M1 this time, because S1 and S2 were already on mainline.
 
 The developers continue with their remaining work, integrating with each commit.
 
-![](../_resources/Image-010.png)
+![](../resources/Image-010.png)
 
 ### Comparing integration frequencies
 
 Low Frequency
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-016.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-016.png)
 
 High Frequency
 
-![](../_resources/Image-010.png)
+![](../resources/Image-010.png)
 
 ==Frequent integration increases the frequency of merges but reduces their complexity and risk.== The high-frequency integration has a lot more SMALLER integrations.
 
@@ -276,11 +276,11 @@ What happens if Scarlett and Violet develop a conflict in their very first commi
 
 Low Frequency
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-021.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-021.png)
 
 High Frequency
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-022.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-022.png)
 
 ==Frequent integration also alerts teams to conflicts much more quickly. Nasty merges are usually the result of a conflict that's been latent in the team's work, surfacing only when integration happens.==
 
@@ -445,7 +445,7 @@ Overall I much prefer to work on a team that uses [Continuous Integration](https
 
 The mainline is an active branch, with regular drops of new and modified code. Keeping it healthy is important so that when people start new work, they are starting off a stable base. If it's healthy enough, you can also release code directly from mainline into production.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-023.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-023.png)
 
 This philosophy of keeping the mainline in an always-releasable state is the central tenet of [Continuous Delivery](https://martinfowler.com/bliki/ContinuousDelivery.html). To do this, there must be the determination and skills present to maintain mainline as a [Healthy Branch](https://martinfowler.com/articles/branching-patterns.html#healthy-branch), usually with [Deployment Pipelines](https://martinfowler.com/bliki/DeploymentPipeline.html) to support the intensive testing required.
 
@@ -457,7 +457,7 @@ Teams working this way can usually keep track of their releases by using tags on
 
 ==A typical release branch will copy from the current mainline, but not allow any new features to added to it.== The main development team continues to add such features to the mainline, and these will be picked up in a future release. The developers working on the release focus solely on removing any defects that stop the release from being production-ready. Any fixes to these defects are created on the release branch and merged to mainline. Once there are no more faults to deal with, the branch is ready for production release.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-024.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-024.png)
 
 Although the scope of work for the fixes on the release branch is (hopefully) smaller than new feature code, it gets increasingly difficult to merge them back into mainline as time goes on. Branches inevitably diverge, so ==as more commits modify mainline, it gets harder to merge the release branch into mainline==.
 
@@ -465,7 +465,7 @@ A problem with applying the commits to the release branch in this way is that it
 
 Some people [favor creating the commits on mainline](https://research.google/pubs/pub45424/), and only once they are working there to cherry-pick them into the release branch.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-025.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-025.png)
 
 A **cherry-pick** is when a commit is copied from one branch to another, but the branches aren't merged. That is, only the one commit is copied over, not the previous commits since the branch point. In this example, if I were to merge F1 into the release branch, then this would include M4 and M5. But a cherry-pick only takes F1. A cherry-pick may not cleanly apply to the release branch, as it may rely on changes done in M4 and M5.
 
@@ -473,7 +473,7 @@ The downside of writing release fixes on mainline is that many teams find it har
 
 ==Teams that only have one version in production at a time will only need a single release branch, but some products will have many releases present in production use.== Software that's run on customers' kit will only be upgraded when that customer wishes to. Many customers are reluctant to upgrade unless they have compelling new features, having been burned by upgrades that fail. Such customers, however, still want bug fixes, especially if they involve security issues. In this situation the development team keeps release branches open for each release that's still being used, and applies fixes to them as needed.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-026.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-026.png)
 
 As development goes on it gets increasingly difficult to apply fixes to older releases, but that's often the cost of doing business. It can only be mitigated by ==encouraging customers to frequently upgrade to the latest version==. Keeping the product stable is essential for this, once burned a customer will be reluctant to do an unnecessary upgrade again.
 
@@ -499,7 +499,7 @@ Once a version of a code base reaches a certain level of readiness, it's copied 
 
 Consider a maturity branch for production. When we are getting a production release ready, we open a release branch to stabilize the product. Once it's ready we copy it to a long-running production branch. I think of this as copy rather than a merge, as we want the production code to be exactly the same as what was tested on the upstream branches.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-027.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-027.png)
 
 One of the appeals of a maturity branch is that it clearly shows each version of the code that reaches that stage in the release workflow. So in the example above, we only want a single commit on the production branch that combines commits M1-3 and F1-2. This loses the link to the fine-grained commits on mainline. These commits should be recorded in the commit message to help people track them down later.
 
@@ -521,7 +521,7 @@ The need to use the source-code management system for tracking like this is a si
 
 A release branch pattern combined with a maturity branch for a release candidate. When we wish to do a release we copy mainline into this release branch. As with the per-release branches commits are only made onto the release branch to improve stability. These fixes are also merged into mainline. We tag a release when it happens and can copy mainline in again when we want to do another release.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-028.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-028.png)
 
 Commits may be copied in as is more typical in maturity branches, or merged in. If merged in we must be careful that the head of the release branch exactly matches the head of mainline.
 
@@ -542,7 +542,7 @@ Software usually needs to be run in distinct environments, such as a developer's
 
 An environmental branch is branch that contains commits that apply to the source code to reconfigure the product to run in a different environment. We may have version 2.4 running on mainline, and now wish to run it on our staging server. We do this by cutting a new branch starting with version 2.4, apply the appropriate environment changes, rebuild the product, and deploy it to the staging environment.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-029.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-029.png)
 
 The changes are usually applied by hand, although if the folks responsible are comfortable with git they may cherry pick the changes from an earlier branch.
 
@@ -570,7 +570,7 @@ If a serious bug appears in production, then it needs to be fixed as soon as pos
 
 Hotfix work needs to be done in source control, so that the team can properly record and collaborate on it. They can do this by opening a branch at the latest released version and applying any changes for the hotfix on that branch.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-030.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-030.png)
 
 Once the fix is applied to production, then the hotfix can be applied to mainline to ensure there isn't a regression with the next version.
 
@@ -579,13 +579,13 @@ Once the fix is applied to production, then the hotfix can be applied to mainlin
 
 If a team is using release branches, hotfix work can be done on the release branch and a new release made when completed. This turns the old release branch into a hotfix branch.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-031.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-031.png)
 
 As with release branches, it's possible to make the hotfixes on mainline and cherry-pick them over to the release branch. But this is less common.
 
 If a team does Continuous Delivery, it can release hotfixes directly off mainline. They may still use a hotfix branch, but they'll start it from the latest commit, rather than the last released commit.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-032.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-032.png)
 
 If M4 and M5 expose new features, then the hotfix is likely to be just folded into a 2.3 release. With Continuous Delivery hotfixes doesn't need to sidestep the normal release process. It's usual to disallow any commits to mainline until the hotfix is completed. This fits with the mantra that nobody has a more important task to do than to fix mainline - and in fact is true of any defect found on mainline, even those not yet sent into production. So I suppose it isn't really special handling.
 
@@ -603,7 +603,7 @@ A team that uses a release train will set a regular cadence of releases, such as
 
 A team that is using monthly trains would begin a branch for March, based on the February release. They will add new features as the month goes on. On a set date, perhaps the third wednesday in the month, the train departs - feature-freezing that branch. They start a new branch for the April train, and add new features to that. Meanwhile some developers stabilize the March train, releasing it to production when it's ready. Any fixes applied to the March train are cherry-picked over to the April train.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-033.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-033.png)
 
 Release trains are usually used with [Feature Branching](https://martinfowler.com/articles/branching-patterns.html#feature-branching). When Scarlett senses when she'll be done with her feature, she will decide what train to catch. If she thinks she can be done for the March release she'll integrate into the March train, but if not she'll wait for the next one and integrate there.
 
@@ -625,7 +625,7 @@ A release train can be a valuable stage in improving a team's release process. I
 
 We have more than one train accepting features at the same time. If Scarlett doesn't think her feature will be done for the March train, she can still push her mostly-done feature to the April train, and push further commits to finish it off before it departs.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-034.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-034.png)
 
 At regular intervals, we pull from the March train into the April train. Some teams prefer to only do this when the March train departs, so they only have one merge to do, but those of us who know small merges are exponentially easier would prefer to pull every March commit as soon as we can.
 
@@ -635,7 +635,7 @@ Loading a future train allows developers who are working on April features to co
 
 Having multiple branches for new development adds complexity. We can achieve this using mainline just as well. Decide what the release schedule is, and then cut a release branch on that schedule from whatever is on the tip of the mainline.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-035.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-035.png)
 
 If there's a [Release-Ready Mainline](https://martinfowler.com/articles/branching-patterns.html#release-ready-mainline), there's no need for a release branch. With regular releases like this, there's still the option for developers to hold back a nearly-done feature for the next release by not pushing to the mainline if it's just before the regular release date. With [Continuous Integration](https://martinfowler.com/articles/branching-patterns.html#continuous-integration), folks can always delay placing the keystone or keep a feature flag turned off if they want a feature to wait for the next scheduled release.
 
@@ -645,7 +645,7 @@ If there's a [Release-Ready Mainline](https://martinfowler.com/articles/branchin
 
 If you make [Mainline](https://martinfowler.com/articles/branching-patterns.html#mainline) a [Healthy Branch](https://martinfowler.com/articles/branching-patterns.html#healthy-branch) then you can release directly off mainline, recording the release with tag.
 
-![](../_resources/Dev-Patterns-for-Managing-Source-Code-Branches-023.png)
+![](../resources/Dev-Patterns-for-Managing-Source-Code-Branches-023.png)
 
 Just because every commit made to mainline is releasable, doesn't mean it should be released. This is the subtle distinction between [Continuous Delivery](https://martinfowler.com/bliki/ContinuousDelivery.html) and [Continuous Deployment](https://martinfowler.com/bliki/ContinuousDelivery.html#continuous-deployment). A team using continuous deployment does release every change accepted to mainline, but with continuous delivery while every change is releasable, it's a business decision whether or not to release.
 
