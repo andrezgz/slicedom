@@ -214,7 +214,9 @@ As they work, someone else puts a commit onto mainline.
 This team works by keeping a healthy branch and pulling from mainline after each commit. So Scarlett now needs to pull M1, merging commits S1..3 with M1.
 
 ![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-013.png)
+
 Violet needs to do the same thing.
+
 ![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-014.png)
 
 At this point both developers are up to date with mainline, but they haven't integrated since they are both isolated from each other.
