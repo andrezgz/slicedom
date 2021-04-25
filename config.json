@@ -1,0 +1,8 @@
+{
+  "title": "Slicedom",
+  "useSideMenu": true,
+  "lineBreaks": "gfm",
+  "additionalFooterText": "",
+  "anchorCharacter": "&para;",
+  "tocAnchor": "[ &uarr; ]"
+}
