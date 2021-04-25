@@ -208,6 +208,7 @@ Scarlett and Vilolet begin by cloning the mainline into their branches, then doi
 ![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-011.png)
 
 As they work, someone else puts a commit onto mainline.
+
 ![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-012.png)
 
 This team works by keeping a healthy branch and pulling from mainline after each commit. So Scarlett now needs to pull M1, merging commits S1..3 with M1.
