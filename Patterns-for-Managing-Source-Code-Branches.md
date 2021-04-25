@@ -250,7 +250,7 @@ When the external push to mainline appears, it gets picked up in the usual rhyth
 
 The developers continue with their remaining work, integrating with each commit.
 
-![](resources/Image-010.png)
+![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-036.png)
 
 ### Comparing integration frequencies
 
@@ -260,7 +260,7 @@ Low Frequency
 
 High Frequency
 
-![](resources/Image-010.png)
+![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-036.png)
 
 ==Frequent integration increases the frequency of merges but reduces their complexity and risk.== The high-frequency integration has a lot more SMALLER integrations.
 
