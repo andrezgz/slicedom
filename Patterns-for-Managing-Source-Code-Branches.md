@@ -63,7 +63,7 @@ Jonny LeRoy likes to [point out this flaw](https://twitter.com/jahnnie/status/93
 
 The problem is familiar to anyone who has worked with **concurrent or distributed computing**. We have some shared state (the code base) with developers making updates in parallel. We need to somehow combine these by serializing the changes into some consensus update. Our task is made more complicated by the fact that getting a system to execute and run correctly implies very complex validity criteria for that shared state. Humans need to find the consensus, and that consensus may involve mixing choice parts of different updates. Often consensus can only be reached with original updates to resolve the conflicts.
 
-> I start with: "what if there was no branching". Everybody would be editing the live code, half-baked changes would bork the system, people would be stepping all over each other. And so ==we give individuals the illusion of frozen time, that they are the only ones changing the system and those changes can wait until they are fully baked before risking the system==. But this is an illusion and eventually the price for it comes due. Who pays? When? How much? That's what these patterns are discussing: alternatives for paying the piper.
+> I start with: "what if there was no branching". Everybody would be editing the live code, half-baked changes would bork the system, people would be stepping all over each other. And so <mark>we give individuals the illusion of frozen time, that they are the only ones changing the system and those changes can wait until they are fully baked before risking the system</mark>. But this is an illusion and eventually the price for it comes due. Who pays? When? How much? That's what these patterns are discussing: alternatives for paying the piper.
 >
 > -- Kent Beck
 
@@ -77,7 +77,7 @@ The **mainline** is a special codeline that we consider to be the current state 
 
 Different teams use different names for this special branch. git users will often call it “master”, subversion users usually call it “trunk”.
 
-I must stress here that ==mainline is a *single, shared* codeline==. When people talk about “master” in git, they can mean several different things, since every repository clone has it's own local master. Usually such teams will have an origin repository and its master is the mainline.
+I must stress here that <mark>mainline is a *single, shared* codeline</mark>. When people talk about “master” in git, they can mean several different things, since every repository clone has it's own local master. Usually such teams will have an origin repository and its master is the mainline.
 
 Starting a new piece of work from scratch means cloning that origin repository. If I already have a clone, I begin by pulling master to so it's up to date with the mainline.
 
@@ -97,7 +97,7 @@ Since [Mainline](https://martinfowler.com/articles/branching-patterns.html#mainl
 
 There is a tension around the degree of testing to provide sufficient confidence of health. Many more thorough tests require a lot of time to run, delaying feedback on whether the commit is healthy. Teams handle this by separating tests into multiple stages on a [Deployment Pipeline](https://martinfowler.com/bliki/DeploymentPipeline.html). The first stage of these tests should run quickly, usually no more than ten minutes, but still be reasonably comprehensive. I refer to such a suite as the **commit suite** (although it's often referred to as "the unit tests" since the commit suite usually is mostly [Unit Tests](https://martinfowler.com/bliki/UnitTest.html)).
 
-Ideally the full range of tests should be run on every commit. However if the tests are slow, for example performance tests that need to soak a server for a couple of hours, that isn't practical. ==These days teams can usually build a commit suite that can run on every commit, and run later stages of the deployment pipeline as often as they can.==
+Ideally the full range of tests should be run on every commit. However if the tests are slow, for example performance tests that need to soak a server for a couple of hours, that isn't practical. <mark>These days teams can usually build a commit suite that can run on every commit, and run later stages of the deployment pipeline as often as they can.</mark>
 
 That the code runs without bugs is not enough to say that the code is good. In order to maintain a steady pace of delivery, [we need to keep the internal quality of the code high](https://martinfowler.com/articles/is-quality-worth-cost.html). A popular way of doing that is to use [Reviewed Commits](https://martinfowler.com/articles/branching-patterns.html#reviewed-commits).
 
@@ -142,7 +142,7 @@ At some point, she reaches a point where she wants to integrate. The first part 
 
 ![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-005.png)
 
-==In general people use the word "merge" whenever they talk about bringing branches together, whether they actually use a git merge or rebase operation==. We'll consider "merge" to be the logical task that can be implemented with either. There's a whole other discussion on whether to use vanilla merges, use or avoid fast-forward merges, or use rebasing.
+<mark>In general people use the word "merge" whenever they talk about bringing branches together, whether they actually use a git merge or rebase operation</mark>. We'll consider "merge" to be the logical task that can be implemented with either. There's a whole other discussion on whether to use vanilla merges, use or avoid fast-forward merges, or use rebasing.
 
 If Scarlett is fortunate, merging in Violet's code will be a clean merge, if not she'll have some conflicts to deal with. These may be textual conflicts, most of which the source control system can handle automatically. But semantic conflicts are much harder to deal with, and this is where [Self Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html) is very handy.
 
@@ -190,7 +190,7 @@ When she's done working on the feature, she'll then perform [Mainline Integratio
 
 ![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-010.png)
 
-If Scarlett works on ==more than one feature at the same time, she'll open a separate branch for each one==.
+If Scarlett works on <mark>more than one feature at the same time, she'll open a separate branch for each one</mark>.
 
 #### When to use Future Branching
 
@@ -250,7 +250,7 @@ When the external push to mainline appears, it gets picked up in the usual rhyth
 
 ![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-020.png)
 
-==While it's similar to what happened before, the integrations are smaller, even the final one, when the feature is complete.== Scarlett only has to integrate S3 with M1 this time, because S1 and S2 were already on mainline.
+<mark>While it's similar to what happened before, the integrations are smaller, even the final one, when the feature is complete.</mark> Scarlett only has to integrate S3 with M1 this time, because S1 and S2 were already on mainline.
 
 The developers continue with their remaining work, integrating with each commit.
 
@@ -266,12 +266,12 @@ High Frequency
 
 ![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-036.png)
 
-==Frequent integration increases the frequency of merges but reduces their complexity and risk.== The high-frequency integration has a lot more SMALLER integrations.
+<mark>Frequent integration increases the frequency of merges but reduces their complexity and risk.</mark> The high-frequency integration has a lot more SMALLER integrations.
 
 - Smaller integrations mean less work, since there's less code changes that might hold up conflicts.
 - Smaller integrations mean less risk. The problem with big merges is the uncertainty of that work. Big merges occasionally go very, *very,* badly. That occasional pain ends up being worse than a regular pain.
 
-> If I compare spending an extra ten minutes per integration with a 1 out of fifty chance of spending 6 hours fixing an integration - which do I prefer? If I just look at the effort, then the 1-in-50 is better, since it's 6 hours rather 8 hours and twenty minutes. But the uncertainty makes the 1-in-50 case feel much worse, an ==uncertainly that leads to integration fear==.
+> If I compare spending an extra ten minutes per integration with a 1 out of fifty chance of spending 6 hours fixing an integration - which do I prefer? If I just look at the effort, then the 1-in-50 is better, since it's 6 hours rather 8 hours and twenty minutes. But the uncertainty makes the 1-in-50 case feel much worse, an <mark>uncertainly that leads to integration fear</mark>.
 
 What happens if Scarlett and Violet develop a conflict in their very first commits? When do they detect the conflict has occurred?
 
@@ -286,21 +286,21 @@ High Frequency
 
 ![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-022.png)
 
-==Frequent integration also alerts teams to conflicts much more quickly. Nasty merges are usually the result of a conflict that's been latent in the team's work, surfacing only when integration happens.==
+<mark>Frequent integration also alerts teams to conflicts much more quickly. Nasty merges are usually the result of a conflict that's been latent in the team's work, surfacing only when integration happens.</mark>
 
-[Self Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html) is our life-saver. If we have a strong test suite, using it as part of the healthy branch will spot the conflict so there's far less chance of a bug making its way into production. But even with a strong test suite acting as a gatekeeper to mainline, large integrations make life harder. The more code we have to integrate, the harder it is to find the bug. We also have a higher chance of multiple, interfering bugs, that are extra-difficult to understand. Not just do ==we have less to look at with smaller commits, we can also use [Diff Debugging](https://martinfowler.com/bliki/DiffDebugging.html) to help narrow down which change introduced the problem==.
+[Self Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html) is our life-saver. If we have a strong test suite, using it as part of the healthy branch will spot the conflict so there's far less chance of a bug making its way into production. But even with a strong test suite acting as a gatekeeper to mainline, large integrations make life harder. The more code we have to integrate, the harder it is to find the bug. We also have a higher chance of multiple, interfering bugs, that are extra-difficult to understand. Not just do <mark>we have less to look at with smaller commits, we can also use [Diff Debugging](https://martinfowler.com/bliki/DiffDebugging.html) to help narrow down which change introduced the problem</mark>.
 
 What a lot of people don't realize is that **a source control system is a communication tool**. It allows Scarlett to see what other people on the team are doing. With frequent integrations, not just is she alerted right away when there are conflicts, she's also more aware of what everyone is up to, and how the codebase is evolving. We're less like individuals hacking away independently and more like a team working together.
 
-==Increasing the frequency of integration is an important reason to reduce the size of features.== The smaller the feature, the quicker it is to build, quicker to get into production, quicker to start delivering its value. Furthermore smaller features reduces the feedback time, allowing a team to make better feature decisions as they learn more about their customers.
+<mark>Increasing the frequency of integration is an important reason to reduce the size of features.</mark> The smaller the feature, the quicker it is to build, quicker to get into production, quicker to start delivering its value. Furthermore smaller features reduces the feedback time, allowing a team to make better feature decisions as they learn more about their customers.
 
 ### Integration Fear
 
 When teams get a couple of bad merge experiences, they tend to be wary of doing integration.
 
-Team does ==integration less frequently==, which leads to more nasty merge incidents, which leads to less frequent integrations...
+Team does <mark>integration less frequently</mark>, which leads to more nasty merge incidents, which leads to less frequent integrations...
 
-Teams stop doing things that they think will make integration harder. In particular this makes them ==resist refactoring==.
+Teams stop doing things that they think will make integration harder. In particular this makes them <mark>resist refactoring</mark>.
 
 But reducing refactoring leads to the code base getting increasingly unhealthy, difficult to understand and modify, and thus slowing down the teams feature delivery. Since it takes longer to complete features, that further increases integration frequency.
 
@@ -318,18 +318,18 @@ Developers do mainline integration as soon as they have a healthy commit they ca
 
 Feature branching implies a lower bound to the size of a change-set - you can't be smaller than a cohesive feature.
 
-Continuous Integration applies a different trigger for integration - you integrate whenever you've made a hunk of progress on the feature and your branch is still healthy. ==There's no expectation that the feature be complete, just that there's been a worthwhile amount of changes to the codebase.==
+Continuous Integration applies a different trigger for integration - you integrate whenever you've made a hunk of progress on the feature and your branch is still healthy. <mark>There's no expectation that the feature be complete, just that there's been a worthwhile amount of changes to the codebase.</mark>
 
 The rule of thumb is that ["everyone commits to the mainline every day"](https://martinfowler.com/articles/continuousIntegration.html#EveryoneCommitsToTheMainlineEveryDay), or more precisely: *you should never have more than a day's work sitting unintegrated in your local repository*. In practice, most practitioners of Continuous Integration integrate many times a day.
 
-Developers using Continuous Integration need to get used to the idea of reaching frequent integration points with a partially built feature. ==They need to consider how to do this without exposing a partially built feature in the running system.==
+Developers using Continuous Integration need to get used to the idea of reaching frequent integration points with a partially built feature. <mark>They need to consider how to do this without exposing a partially built feature in the running system.</mark>
 
 - Hiding a partially built feature by hooking up a [Keystone Interface](https://martinfowler.com/bliki/KeystoneInterface.html) last is often an effective technique.
 - If there's no way to easily hide the partial feature, we can use [feature flags](https://martinfowler.com/articles/feature-toggles.html) (or feature toggles). As well as hiding a partially built feature, such flags also allow the feature to be selectively revealed to a subset of users - often handy for a slow roll-out of a new feature.
 
 Those who use Continuous Integration need [Self Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html), so that there's confidence that having partially built features in mainline doesn't increase the chance of bugs. With this approach, developers write tests for the partially built features as they are writing that feature code and commit both feature code and tests into mainline together (perhaps using [Test Driven Development](https://martinfowler.com/bliki/TestDrivenDevelopment.html)).
 
-In terms of a local repo, ==most people who use Continuous Integration don't bother with a separate local branch to work on==. It's usually straightforward to commit to the local master and perform mainline integration when done. However it's perfectly fine to open a feature branch and do the work there, if developers prefer it, integrating back into the local master and mainline at frequent intervals. ==The difference between feature branching and continuous integration isn't whether or not there's a feature branch, but when developers integrate with mainline.==
+In terms of a local repo, <mark>most people who use Continuous Integration don't bother with a separate local branch to work on</mark>. It's usually straightforward to commit to the local master and perform mainline integration when done. However it's perfectly fine to open a feature branch and do the work there, if developers prefer it, integrating back into the local master and mainline at frequent intervals. <mark>The difference between feature branching and continuous integration isn't whether or not there's a feature branch, but when developers integrate with mainline.</mark>
 
 #### When to use Continuous Integration
 
@@ -349,9 +349,9 @@ Continuous Integration allows a team to get the benefits of high-frequency integ
 - Doing merges more frequently reduces the risk of a nasty merge, which both cuts out the bad surprises that this brings and reduces the overall fear of merging.
 - If conflicts arise in the code, high-frequency integration discovers them quickly, before they lead to those nasty integration problems.
 
-The clear downside of Continuous Integration is that it lacks the closure of that climactic integration to mainline. It's a risk if a team isn't good at keeping a Healthy Branch. Keeping all the commits of a feature together also makes it possible to make a late decision on whether to include a feature in an upcoming release. While feature flags allow features to be switched on or off from the users' perspective, the code for the feature is still in the product. Teams who want to do ==Continuous Integration must develop a strong testing regimen so they can be confident that mainline remains healthy even with many integrations a day==. This prerequisite does mean that ==Feature Branching is better for teams that don't force a Healthy Branch and require release branches to stabilize code before release==.
+The clear downside of Continuous Integration is that it lacks the closure of that climactic integration to mainline. It's a risk if a team isn't good at keeping a Healthy Branch. Keeping all the commits of a feature together also makes it possible to make a late decision on whether to include a feature in an upcoming release. While feature flags allow features to be switched on or off from the users' perspective, the code for the feature is still in the product. Teams who want to do <mark>Continuous Integration must develop a strong testing regimen so they can be confident that mainline remains healthy even with many integrations a day</mark>. This prerequisite does mean that <mark>Feature Branching is better for teams that don't force a Healthy Branch and require release branches to stabilize code before release</mark>.
 
-While the size and uncertainty of merges is the most obvious problem with ==Feature Branching, the biggest problem with it may be that it can deter refactoring==. Refactoring is at its most effective when it's done regularly and with little friction. Refactoring will introduce conflicts, if these conflicts aren't spotted and resolved quickly, merging gets fraught. Refactoring thus works best with a high frequency of integration, so it's no surprise that it became popular as part of [Extreme Programming](https://martinfowler.com/bliki/ExtremeProgramming.html) which also has Continuous Integration as one of the original practices. ==Feature Branching also discourages developers from making changes that aren't seen as part of the feature being built==, which undermines the ability of refactoring to steadily improve a code base.
+While the size and uncertainty of merges is the most obvious problem with <mark>Feature Branching, the biggest problem with it may be that it can deter refactoring</mark>. Refactoring is at its most effective when it's done regularly and with little friction. Refactoring will introduce conflicts, if these conflicts aren't spotted and resolved quickly, merging gets fraught. Refactoring thus works best with a high frequency of integration, so it's no surprise that it became popular as part of [Extreme Programming](https://martinfowler.com/bliki/ExtremeProgramming.html) which also has Continuous Integration as one of the original practices. <mark>Feature Branching also discourages developers from making changes that aren't seen as part of the feature being built</mark>, which undermines the ability of refactoring to steadily improve a code base.
 
 > We found that having branches or forks with very short lifetimes (less than a day) before being merged into trunk, and less than three active branches in total, are important aspects of continuous delivery, and all contribute to higher performance. So does merging code into trunk or master on a daily basis.
 >
@@ -395,15 +395,15 @@ Developing the discipline for timely Reviewed Commits is important. If a develop
 
 #### When to use Reviewed Commits
 
-==Reviewed Commits always introduces some latency into the integration process, encouraging a lower integration frequency.==
+<mark>Reviewed Commits always introduces some latency into the integration process, encouraging a lower integration frequency.</mark>
 
 [Pair Programming](https://martinfowler.com/bliki/PairProgramming.html) offers a continuous code review process, with a faster feedback cycle than waiting for a code review. (Like Continuous Integration and Refactoring, it's one of the original practices of [Extreme Programming](https://martinfowler.com/bliki/ExtremeProgramming.html)).
 
 Many teams that use reviewed commits don't do them quickly enough. The valuable feedback that they can offer then comes too late to be useful. At that point there's an awkward choice between a lot of rework, or accepting something that may work, but undermines the quality of the code-base.
 
-Code review isn't confined to before the code hits the mainline. ==Many tech leaders find it useful to review code after a commit, catching up with developers when they see concerns.== A culture of refactoring is valuable here. Done well this sets up a community where everyone on the team is regularly reviewing the code base and fixing problems that they see.
+Code review isn't confined to before the code hits the mainline. <mark>Many tech leaders find it useful to review code after a commit, catching up with developers when they see concerns.</mark> A culture of refactoring is valuable here. Done well this sets up a community where everyone on the team is regularly reviewing the code base and fixing problems that they see.
 
-The trade-offs around reviewed commits rest primarily on the social structure of the team. The project leader (like a maintainer) trusts a small (perhaps singular) group of maintainers, and is wary of code contributed from the rest of the team. Team members may be allocated to multiple projects at once, making them much more like open-source contributors. ==If such a social structure exists, then Reviewed Commits and Feature Branching make a great deal of sense. But a team with a higher degree of trust often finds other mechanisms keep code quality high without adding friction to the integration process.==
+The trade-offs around reviewed commits rest primarily on the social structure of the team. The project leader (like a maintainer) trusts a small (perhaps singular) group of maintainers, and is wary of code contributed from the rest of the team. Team members may be allocated to multiple projects at once, making them much more like open-source contributors. <mark>If such a social structure exists, then Reviewed Commits and Feature Branching make a great deal of sense. But a team with a higher degree of trust often finds other mechanisms keep code quality high without adding friction to the integration process.</mark>
 
 So, while reviewed commits can be a valuable practice, it's by no means a necessary route to a healthy code base, particularly if you're looking to grow a well-balanced team that isn't overly dependent on its initial leader.
 
@@ -413,7 +413,7 @@ So, while reviewed commits can be a valuable practice, it's by no means a necess
 
 Whatever your attitude is to Feature Branching and Continuous Integration, it's valuable to examine anything that adds this kind of friction. Unless it clearly adds value, any such friction should be removed.
 
-==Manual process are a common source of friction== here. This kind of friction can often be reduced by
+<mark>Manual process are a common source of friction</mark> here. This kind of friction can often be reduced by
 
 - using automated processes,
 - improving developer educations (to remove the need), and
@@ -433,7 +433,7 @@ The ability to reduce the effort of understanding I need is why it's worth putti
 
 Modularity also impacts integration. If a system has good modules then most of the time Scarlett and Violet will be working in well-separated parts of the code base, and their changes won't cause conflicts. Good modularity also enhances techniques like [Keystone Interface](https://martinfowler.com/bliki/KeystoneInterface.html) and [Branch By Abstraction](https://martinfowler.com/bliki/BranchByAbstraction.html) to avoid the need for the isolation that branches provide.
 
-> ==Feature Branching is a poor man's modular architecture, instead of building systems with the ability to easy swap in and out features at runtime / deploytime they couple themselves to the source control providing this mechanism through manual merging.==
+> <mark>Feature Branching is a poor man's modular architecture, instead of building systems with the ability to easy swap in and out features at runtime / deploytime they couple themselves to the source control providing this mechanism through manual merging.</mark>
 >
 > -- Dan Bodart
 
@@ -443,7 +443,7 @@ The effort to achieve modularity involves good development practices, learning a
 
 ## Personal Thoughts on Integration Patterns
 
-Overall I much prefer to work on a team that uses [Continuous Integration](https://martinfowler.com/articles/branching-patterns.html#continuous-integration). There are many circumstances where context isn't the right one - but my reaction is to do the work to change that context. I want to be in an environment where ==everyone can easily keep refactoring the codebase, improving its modularity, keeping it healthy - all to enable us to quickly respond to changing business needs==.
+Overall I much prefer to work on a team that uses [Continuous Integration](https://martinfowler.com/articles/branching-patterns.html#continuous-integration). There are many circumstances where context isn't the right one - but my reaction is to do the work to change that context. I want to be in an environment where <mark>everyone can easily keep refactoring the codebase, improving its modularity, keeping it healthy - all to enable us to quickly respond to changing business needs</mark>.
 
 ## THE PATH FROM MAINLINE TO PRODUCTION RELEASE
 
@@ -459,11 +459,11 @@ Teams working this way can usually keep track of their releases by using tags on
 
 *A branch that only accepts commits accepted to stabilize a version of the product ready for release.*
 
-==A typical release branch will copy from the current mainline, but not allow any new features to added to it.== The main development team continues to add such features to the mainline, and these will be picked up in a future release. The developers working on the release focus solely on removing any defects that stop the release from being production-ready. Any fixes to these defects are created on the release branch and merged to mainline. Once there are no more faults to deal with, the branch is ready for production release.
+<mark>A typical release branch will copy from the current mainline, but not allow any new features to added to it.</mark> The main development team continues to add such features to the mainline, and these will be picked up in a future release. The developers working on the release focus solely on removing any defects that stop the release from being production-ready. Any fixes to these defects are created on the release branch and merged to mainline. Once there are no more faults to deal with, the branch is ready for production release.
 
 ![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-024.png)
 
-Although the scope of work for the fixes on the release branch is (hopefully) smaller than new feature code, it gets increasingly difficult to merge them back into mainline as time goes on. Branches inevitably diverge, so ==as more commits modify mainline, it gets harder to merge the release branch into mainline==.
+Although the scope of work for the fixes on the release branch is (hopefully) smaller than new feature code, it gets increasingly difficult to merge them back into mainline as time goes on. Branches inevitably diverge, so <mark>as more commits modify mainline, it gets harder to merge the release branch into mainline</mark>.
 
 A problem with applying the commits to the release branch in this way is that it's too easy to neglect to copy them over to the mainline, particularly as it gets harder due to divergence. The resulting regression is very embarrassing.
 
@@ -475,15 +475,15 @@ A **cherry-pick** is when a commit is copied from one branch to another, but the
 
 The downside of writing release fixes on mainline is that many teams find it harder to do so, and frustrating to fix it one way on mainline and have to rework on the release branch before the release can occur. This is particularly true when there is schedule pressure to get the release out.
 
-==Teams that only have one version in production at a time will only need a single release branch, but some products will have many releases present in production use.== Software that's run on customers' kit will only be upgraded when that customer wishes to. Many customers are reluctant to upgrade unless they have compelling new features, having been burned by upgrades that fail. Such customers, however, still want bug fixes, especially if they involve security issues. In this situation the development team keeps release branches open for each release that's still being used, and applies fixes to them as needed.
+<mark>Teams that only have one version in production at a time will only need a single release branch, but some products will have many releases present in production use.</mark> Software that's run on customers' kit will only be upgraded when that customer wishes to. Many customers are reluctant to upgrade unless they have compelling new features, having been burned by upgrades that fail. Such customers, however, still want bug fixes, especially if they involve security issues. In this situation the development team keeps release branches open for each release that's still being used, and applies fixes to them as needed.
 
 ![](resources/Dev-Patterns-for-Managing-Source-Code-Branches-026.png)
 
-As development goes on it gets increasingly difficult to apply fixes to older releases, but that's often the cost of doing business. It can only be mitigated by ==encouraging customers to frequently upgrade to the latest version==. Keeping the product stable is essential for this, once burned a customer will be reluctant to do an unnecessary upgrade again.
+As development goes on it gets increasingly difficult to apply fixes to older releases, but that's often the cost of doing business. It can only be mitigated by <mark>encouraging customers to frequently upgrade to the latest version</mark>. Keeping the product stable is essential for this, once burned a customer will be reluctant to do an unnecessary upgrade again.
 
 #### When to use Release Branch
 
-==Release branches are a valuable tool when a team isn't able to keep their mainline in a healthy state.== It allows a portion of the team to focus on the necessary bug fixes that are needed for it to be ready for production. Testers can pull the most stable recent candidate from the tip of this branch. Everyone can see what's been done to stabilize the product. This pattern becomes essential when teams need to manage multiple versions in production.
+<mark>Release branches are a valuable tool when a team isn't able to keep their mainline in a healthy state.</mark> It allows a portion of the team to focus on the necessary bug fixes that are needed for it to be ready for production. Testers can pull the most stable recent candidate from the tip of this branch. Everyone can see what's been done to stabilize the product. This pattern becomes essential when teams need to manage multiple versions in production.
 
 Despite the value of release branches, most of the best teams don't use this pattern for **single-production products**, because they don't need to. If the mainline is kept sufficiently healthy, then any commit to mainline can be released directly. In that case releases should be tagged with a publicly visible version and build number.
 
@@ -513,7 +513,7 @@ Maturity Branches are usually named after the appropriate stage in the developme
 
 Using a maturity branch allows people to get at a couple of important bits of information by showing the version history of particular stages in a release work-flow.
 
-==I can find the latest version by looking at the head of the relevant branch.== If a bug comes up that I'm sure wasn't there beforehand, I can look at what previous versions are on the branch and see the specific code base changes in production.
+<mark>I can find the latest version by looking at the head of the relevant branch.</mark> If a bug comes up that I'm sure wasn't there beforehand, I can look at what previous versions are on the branch and see the specific code base changes in production.
 
 Automation can tie into changes to specific branches - for example an automated process can deploy a version into production whenever a commit is made to the production branch.
 
@@ -556,13 +556,13 @@ The environment branch pattern is often combined with [Maturity Branch](https://
 
 It allows us to tweak an application in any way we need to ready it for a new environment. We can keep those changes in a diff that can be cherry-picked into future versions of the product.
 
-==The looming danger with any shift in environment is if the application's behavior changes as we move it from one environment to another.== If we can't take a version running in production and debug it on a developer's workstation, it makes it much harder to fix problems. We can introduce bugs that only show up in certain environments, most dangerously production environments. Because of this danger we want to ==ensure that the same code runs in production as it does everywhere else==.
+<mark>The looming danger with any shift in environment is if the application's behavior changes as we move it from one environment to another.</mark> If we can't take a version running in production and debug it on a developer's workstation, it makes it much harder to fix problems. We can introduce bugs that only show up in certain environments, most dangerously production environments. Because of this danger we want to <mark>ensure that the same code runs in production as it does everywhere else</mark>.
 
 The problem with environmental branches is the very flexibility that makes them so appealing. Since we can change any aspect of the code in those diffs, we can easily introduce configuration patches that lead to varied behavior and the bugs that come with them.
 
-As a result, many organizations wisely insist on an iron rule that once an executable is compiled, it must be the same executable that runs in every environment. ==If configuration changes are required they must be isolated through mechanisms such as explicit configuration files or environment variables.==
+As a result, many organizations wisely insist on an iron rule that once an executable is compiled, it must be the same executable that runs in every environment. <mark>If configuration changes are required they must be isolated through mechanisms such as explicit configuration files or environment variables.</mark>
 
-Keep any environmental changes minimal, and don't use source branching to apply them. The general rule of thumb is that you should be able to check out any version of the product and run it in any environment, so ==anything that changes purely due to different deployment environments shouldn't be in source control==. There is an argument for storing combinations of default parameters in source control, but each version of an application should be able to switch between these different configurations as needed based on a dynamic factor such as environment variables.
+Keep any environmental changes minimal, and don't use source branching to apply them. The general rule of thumb is that you should be able to check out any version of the product and run it in any environment, so <mark>anything that changes purely due to different deployment environments shouldn't be in source control</mark>. There is an argument for storing combinations of default parameters in source control, but each version of an application should be able to switch between these different configurations as needed based on a dynamic factor such as environment variables.
 
 Environment Branches are an example of using source branching as a [poor man's modular architecture](https://martinfowler.com/articles/branching-patterns.html#importance-modularity). If an application needs to run in different environments, the ability to switch between different environments needs to be first-class part of its design.
 
@@ -603,7 +603,7 @@ The more frequently a team releases, the more it can leave production bug fixes 
 
 *Release on a set interval of time, like trains departing on a regular schedule. Developers choose which train to catch when they have completed their feature.*
 
-A team that uses a release train will set a regular cadence of releases, such as every two weeks, or every six months. ==Dates are set for when the team will cut a release branch for each release==, following the metaphor of a train schedule. People decide which train they want a feature to catch, and target their work for that train, putting their commit onto the appropriate branch while the train is loading. Once the train departs, that branch is a [Release Branch](https://martinfowler.com/articles/branching-patterns.html#release-branch) and will only accept fixes.
+A team that uses a release train will set a regular cadence of releases, such as every two weeks, or every six months. <mark>Dates are set for when the team will cut a release branch for each release</mark>, following the metaphor of a train schedule. People decide which train they want a feature to catch, and target their work for that train, putting their commit onto the appropriate branch while the train is loading. Once the train departs, that branch is a [Release Branch](https://martinfowler.com/articles/branching-patterns.html#release-branch) and will only accept fixes.
 
 A team that is using monthly trains would begin a branch for March, based on the February release. They will add new features as the month goes on. On a set date, perhaps the third wednesday in the month, the train departs - feature-freezing that branch. They start a new branch for the April train, and add new features to that. Meanwhile some developers stabilize the March train, releasing it to production when it's ready. Any fixes applied to the March train are cherry-picked over to the April train.
 
@@ -621,9 +621,9 @@ Release trains are particularly useful when there is significant friction in the
 
 The release train mechanism helps concentrate everyone's attention on what features should appear when, and thus help predictability of when features will be completed.
 
-A clear downside of this approach is that ==features completed early in the train's period will sit on the train reading a book while waiting for the departure. If these features are important, that's means the product misses an important capability for several weeks or months.==
+A clear downside of this approach is that <mark>features completed early in the train's period will sit on the train reading a book while waiting for the departure. If these features are important, that's means the product misses an important capability for several weeks or months.</mark>
 
-A release train can be a valuable stage in improving a team's release process. If a team has difficulty making stable releases, then jumping all the way to continuous delivery can be a jump too far. Picking a suitable release train period, one that's hard but plausible, can be a good first step. As the team ==gains skills they can increase the frequency of the trains, eventually abandoning them for continuous delivery== as their capability grows.
+A release train can be a valuable stage in improving a team's release process. If a team has difficulty making stable releases, then jumping all the way to continuous delivery can be a jump too far. Picking a suitable release train period, one that's hard but plausible, can be a good first step. As the team <mark>gains skills they can increase the frequency of the trains, eventually abandoning them for continuous delivery</mark> as their capability grows.
 
 #### Variation: Loading future trains
 
@@ -633,7 +633,7 @@ We have more than one train accepting features at the same time. If Scarlett doe
 
 At regular intervals, we pull from the March train into the April train. Some teams prefer to only do this when the March train departs, so they only have one merge to do, but those of us who know small merges are exponentially easier would prefer to pull every March commit as soon as we can.
 
-Loading a future train allows developers who are working on April features to collaborate without disturbing the work on the March train. It has the disadvantage that if ==folks on April make changes that conflict with the March work, the March workers don't get feedback, thus making future merges more complicated==.
+Loading a future train allows developers who are working on April features to collaborate without disturbing the work on the March train. It has the disadvantage that if <mark>folks on April make changes that conflict with the March work, the March workers don't get feedback, thus making future merges more complicated</mark>.
 
 #### Compared to regular releases off mainline
 
@@ -679,7 +679,7 @@ Experimental Branches are where developers want to try out some ideas, but don't
 
 The code on the Experimental Branch will be abandoned, and not merged into mainline. This isn't absolute - if it just happens that I like the result and the code can be integrated easily then I won't ignore the opportunity - but I don't *expect* that to be the case.
 
-==Once I've finished with work on an experimental branch, in git I'll usually add a tag and remove the branch.== The tag keeps the codeline around in case I want to reexamine it later - I use a convention such as starting the tag name with "exp" to make its nature clear.
+<mark>Once I've finished with work on an experimental branch, in git I'll usually add a tag and remove the branch.</mark> The tag keeps the codeline around in case I want to reexamine it later - I use a convention such as starting the tag name with "exp" to make its nature clear.
 
 #### When to use Experimental Branch
 
@@ -769,7 +769,7 @@ Trunk-Based Development focuses on doing all work on [Mainline](https://martinfo
 
 Branching is easy, merging is harder. Branching is a powerful technique, but it makes me think of goto statements, global variables, and locks for concurrency. Powerful, easy to use, but easier to over-use, too often they become traps for the unwary and inexperienced.
 
-==The judicious use of branching is essential. The difference between a beneficial drug and a poison is dosage.==
+<mark>The judicious use of branching is essential. The difference between a beneficial drug and a poison is dosage.</mark>
 
 - **Whenever you're considering using a branch, figure out how you are going to merge**. Any time you use any technique, you're trading off against alternatives.
 - **Make sure you understand the alternatives to branching, they are usually superior**. Getting rid of the need for a branch is usually a Good Thing.
