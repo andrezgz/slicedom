@@ -1,1 +1,1 @@
-[Slicedom](./index.md)
+[![](./favicon.png) Slicedom](./index.md)
