@@ -2,5 +2,5 @@
 
 > En construcción eterna
 
-- [Ley de Conway](./Ley-de-Conway.md)
-- [Patterns for Managing Source Code Branches](./Patterns-for-Managing-Source-Code-Branches.md)
+- [Ley de Conway](./reference/Ley-de-Conway.md)
+- [Patterns for Managing Source Code Branches](./reference/Patterns-for-Managing-Source-Code-Branches.md)
