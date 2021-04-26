@@ -1,1 +1,1 @@
-[index](./index.md)
+[Slicedom](./index.md)

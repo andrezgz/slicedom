@@ -1,4 +1,4 @@
-# INDEX
+# ![](./slicedom.png) Slicedom
 
 > En construcción eterna
 
