@@ -138,7 +138,7 @@ The form `\N{...}` may mean something completely different.
 
 - When the `{...}` is a [quantifier](https://perldoc.perl.org/perlre#Quantifiers), it means to match a non-newline character that many times.
     - For example, `\N{3}` means to match 3 non-newlines; `\N{5,}` means to match 5 or more non-newlines.
-- If `{...}` is not a legal quantifier, it is ==presumed to be a named character==.
+- If `{...}` is not a legal quantifier, it is <mark>presumed to be a named character</mark>.
     - Both `\N{DIGIT NINE}` and `\N{U+0039}` represent the digit 9.
     - For example, none of `\N{COLON}`, `\N{4F}`, and `\N{F4}` contain legal quantifiers, so Perl will try to find characters whose names are respectively `COLON`, `4F`, and `F4`.
 
@@ -168,7 +168,7 @@ Example: lowercase letters are matched by the property *Lowercase_Letter* which 
 
 > IMPORTANT: `/\pLl/` is valid, but means something different. It matches a two character string: a letter (Unicode property `\pL`), followed by a lowercase `l`.
 
-What a ==Unicode property matches is never subject to locale rules==, and if locale rules are not otherwise in effect, ==the use of a Unicode property will force the regular expression into using Unicode rules==, if it isn't already.
+What a <mark>Unicode property matches is never subject to locale rules</mark>, and if locale rules are not otherwise in effect, <mark>the use of a Unicode property will force the regular expression into using Unicode rules</mark>, if it isn't already.
 
 Unicode properties are defined *only* on Unicode code points. Starting in v5.20, when matching against `\p` and `\P`, Perl treats non-Unicode code points (those above the legal Unicode maximum of 0x10FFFF) as if they were typical unassigned Unicode code points.
 
@@ -195,7 +195,7 @@ Examples:
 
 <https://perldoc.perl.org/perlrecharclass#POSIX-Character-Classes>
 
-POSIX character classes have the form `[:class:]`, where *class* is the name, and the `[:` and `:]` delimiters. ==POSIX character classes only appear *inside* bracketed character classes==, and are a convenient and descriptive way of listing a group of characters.
+POSIX character classes have the form `[:class:]`, where *class* is the name, and the `[:` and `:]` delimiters. <mark>POSIX character classes only appear *inside* bracketed character classes</mark>, and are a convenient and descriptive way of listing a group of characters.
 
 ```perl
 $string =~ /[[:alpha:]]/; # Correct!
@@ -226,7 +226,7 @@ xdigit Any hexadecimal digit (e.g., [0-9a-fA-F]).  Note [7].
 
 Like the [Unicode properties](https://perldoc.perl.org/perlrecharclass#Unicode-Properties), most of the POSIX properties match the same regardless of whether case-insensitive (`/i`) matching is in effect or not. The two exceptions are `[:upper:]` and `[:lower:]`. Under `/i`, they each match the union of `[:upper:]` and `[:lower:]`.
 
-Most POSIX character classes have **two** Unicode-style `\p` property counterparts. They are not official Unicode properties, but Perl extensions derived from official Unicode properties. 
+Most POSIX character classes have **two** Unicode-style `\p` property counterparts. They are not official Unicode properties, but Perl extensions derived from official Unicode properties.
 
 - One counterpart, "ASCII-range Unicode", matches only characters in the ASCII character set.
 - The other counterpart, "Full-range Unicode", matches any appropriate characters in the full Unicode character set.
@@ -414,7 +414,7 @@ word
 6. `\p{XPerlSpace}` and `\p{Space}` match identically starting with Perl v5.18. In earlier versions, these differ only in that in non-locale matching, `\p{XPerlSpace}` did not match the vertical tab, `\cK`. Same for the two ASCII-only range forms.
 7. Unlike `[[:digit:]]` which matches digits in many writing systems, there are currently only two sets of hexadecimal digits, and it is unlikely that more will be added. This is because you not only need the ten digits, but also the six `[A-F]` (and `[a-f]`) to correspond. That means only the Latin script is suitable for these, and Unicode has only two sets of these, the familiar ASCII set, and the fullwidth forms starting at U+FF10 (FULLWIDTH DIGIT ZERO).
 
-==Both the `\p` counterparts always assume Unicode rules are in effect==. On ASCII platforms, this means they assume that the code points from 128 to 255 are Latin-1, and that means that using them under locale rules is unwise unless the locale is guaranteed to be Latin-1 or UTF-8. In contrast, the POSIX character classes are useful under locale rules. They are affected by the actual rules in effect, as follows:
+<mark>Both the `\p` counterparts always assume Unicode rules are in effect</mark>. On ASCII platforms, this means they assume that the code points from 128 to 255 are Latin-1, and that means that using them under locale rules is unwise unless the locale is guaranteed to be Latin-1 or UTF-8. In contrast, the POSIX character classes are useful under locale rules. They are affected by the actual rules in effect, as follows:
 
 - If the `/a` modifier, is in effect ...
     - Each of the POSIX classes matches exactly the same as their ASCII-range counterparts.
@@ -443,11 +443,11 @@ word
 - `/d` is the old, problematic, pre-5.14 **D**efault character set behavior. Its only use is to force that old behavior.
 - `/l` sets the character set to that of whatever **L**ocale is in effect at the time of the execution of the pattern match.
 - `/u` sets the character set to **U**nicode.
-- `/a` modifier, may be useful. ==It also sets the character set to Unicode, BUT adds several restrictions for **A**SCII-safe matching.==
+- `/a` modifier, may be useful. <mark>It also sets the character set to Unicode, BUT adds several restrictions for **A**SCII-safe matching.</mark>
 
 At any given time, exactly one of these modifiers is in effect. Their existence allows Perl to keep the originally compiled behavior of a regular expression, regardless of what rules are in effect when it is actually executed. And if it is interpolated into a larger regex, the original's rules continue to apply to it, and don't affect the other parts.
 
-==The `/l` and `/u` modifiers are automatically selected for regular expressions compiled within the scope of various pragmas, and we recommend that in general, you use those pragmas instead of specifying these modifiers explicitly.== For one thing, the modifiers affect only pattern matching, and do not extend to even any replacement done, whereas using the pragmas gives consistent results for all appropriate operations within their scopes. For example,
+<mark>The `/l` and `/u` modifiers are automatically selected for regular expressions compiled within the scope of various pragmas, and we recommend that in general, you use those pragmas instead of specifying these modifiers explicitly.</mark> For one thing, the modifiers affect only pattern matching, and do not extend to even any replacement done, whereas using the pragmas gives consistent results for all appropriate operations within their scopes. For example,
 
 ```perl
 s/foo/\Ubar/il
@@ -467,7 +467,7 @@ to get Unicode rules, as the `\L` in the former (but not necessarily the latter)
 
 means to use the current locale's rules (see [perllocale](https://perldoc.perl.org/perllocale)) when pattern matching. For example, `\w` will match the "word" characters of that locale, and `/i` case-insensitive matching will match according to the locale's case folding rules. The locale used will be the one in effect at the time of execution of the pattern match. This may not be the same as the compilation-time locale, and can differ from one match to another if there is an intervening call of the [setlocale() function](https://perldoc.perl.org/perllocale#The-setlocale-function).
 
-==Prior to v5.20, Perl did not support multi-byte locales. Starting then, UTF-8 locales are supported.== No other multi byte locales are ever likely to be supported. However, in all locales, one can have code points above 255 and these will always be treated as Unicode no matter what locale is in effect.
+<mark>Prior to v5.20, Perl did not support multi-byte locales. Starting then, UTF-8 locales are supported.</mark> No other multi byte locales are ever likely to be supported. However, in all locales, one can have code points above 255 and these will always be treated as Unicode no matter what locale is in effect.
 
 Under Unicode rules, there are a few case-insensitive matches that cross the 255/256 boundary. Except for UTF-8 locales in Perls v5.20 and later, these are disallowed under `/l`. For example, 0xFF (on ASCII platforms) does not caselessly match the character at 0x178, `LATIN CAPITAL LETTER Y WITH DIAERESIS`, because 0xFF may not be `LATIN SMALL LETTER Y WITH DIAERESIS` in the current locale, and Perl has no way of knowing if that character even exists in the locale, much less what code point it is.
 
@@ -513,7 +513,7 @@ chop $str;
 $str =~ /^\w/;       # Still a match! $str remains in UTF-8 format.
 ```
 
-==Because of the unexpected behaviors associated with this modifier, you probably should only explicitly use it to maintain weird backward compatibilities.==
+<mark>Because of the unexpected behaviors associated with this modifier, you probably should only explicitly use it to maintain weird backward compatibilities.</mark>
 
 #### /a (and /aa)
 
@@ -570,7 +570,7 @@ Under Unicode rules, these upper-Latin1 characters are interpreted as Unicode co
 
 As explained in ["ASCII Rules versus Unicode Rules"](https://perldoc.perl.org/perlunicode#ASCII-Rules-versus-Unicode-Rules), under ASCII rules, they are considered to be unassigned characters.
 
-==This can lead to unexpected results==. For example, a string's semantics can suddenly change if a code point above 255 is appended to it, which changes the rules from ASCII to Unicode. As an example, consider the following program and its output:
+<mark>This can lead to unexpected results</mark>. For example, a string's semantics can suddenly change if a code point above 255 is appended to it, which changes the rules from ASCII to Unicode. As an example, consider the following program and its output:
 
 ```shell
 $ perl -le'
@@ -614,7 +614,7 @@ Example: `\p{Script_Extensions: Greek}` and `\p{Script_Extensions=Greek}` both m
 
 Example: `\p{Greek}` is a just a shortcut for `\p{Script_Extensions=Greek}`
 
-==Perl always ignores Upper/lower case differences everywhere within the {braces}==. Thus `\p{Greek}` means the same thing as `\p{greek}`.
+<mark>Perl always ignores Upper/lower case differences everywhere within the {braces}</mark>. Thus `\p{Greek}` means the same thing as `\p{greek}`.
 
 > IMPORTANT: changing the case of the `p` or `P` before the left brace completely changes the meaning of the construct, from "match" (for `\p{}`) to "doesn't match" (for `\P{}`).
 
@@ -644,7 +644,7 @@ Compound form (`\p{name=value}` or `\p{name:value}`) tighter rules:
     - A deprecated property may also be stabilized, but this fact is not shown.
 - `O` Obsolete: properties that Unicode once used for internal purposes (but not any longer).
 - `X` Discouraged: applies to certain Perl extensions that are present for backwards compatibility, but are discouraged from being used. These are not obsolete, but their meanings are not stable.
-    - Future Unicode versions could force any of these extensions to be removed without warning, replaced by another property with the same name that means something different. 
+    - Future Unicode versions could force any of these extensions to be removed without warning, replaced by another property with the same name that means something different.
     - Use the equivalent shown instead.
 
 #### Propertis beginning with `In_` or `Is_`
@@ -674,7 +674,7 @@ For compactness, `*` is used as a wildcard instead of showing all possible combi
 \p{Gc: *}                                  \p{General_Category: *}
 ```
 
-mean that 'Gc' is a synonym for 'General_Category', and anything that is valid for the latter is also valid for the former. 
+mean that 'Gc' is a synonym for 'General_Category', and anything that is valid for the latter is also valid for the former.
 
 ```text
 \p{Is_*}                                   \p{*}
