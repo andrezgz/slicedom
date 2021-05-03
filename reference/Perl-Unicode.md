@@ -688,7 +688,7 @@ All non-essential underscores are removed in the display of the short names belo
 
 - `*` is a wild-card
 - `(\d+)` in the info column gives the number of Unicode code points matched by this property.
-- `D means this is deprecated.
+- `D` means this is deprecated.
 - `O` means this is obsolete.
 - `S` means this is stabilized.
 - `T` means tighter (stricter) name matching applies.
