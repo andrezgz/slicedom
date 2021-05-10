@@ -2283,7 +2283,7 @@ if (typeof exports === 'object') {
         if ($.trim($pageTitle.toptext()).length > 0) {
             $('#md-title').prepend($pageTitle);
             var title = $pageTitle.toptext();
-            //document.title = title;
+            document.title = title + ' | ' + document.title;
         } else {
             $('#md-title').remove();
         }
