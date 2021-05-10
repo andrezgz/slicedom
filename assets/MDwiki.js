@@ -2986,8 +2986,8 @@ if (typeof exports === 'object') {
     function addFooter() {
         var navbar = '';
         navbar += '<hr><div class="scontainer">';
+        navbar +=   '<div id="md-footer-additional"></div>';
         navbar +=   '<div class="pull-right md-copyright-footer"> ';
-        navbar +=     '<span id="md-footer-additional"></span>';
         navbar +=     'Website generated with <a href="http://www.mdwiki.info">MDwiki</a> ';
         navbar +=     '&copy; Timo D&ouml;rr and contributors. ';
         navbar +=   '</div>';
@@ -3001,7 +3001,7 @@ if (typeof exports === 'object') {
     function addAdditionalFooterText () {
         var text = $.md.config.additionalFooterText;
         if (text) {
-            $('.md-copyright-footer #md-footer-additional').html(text);
+            $('#md-footer-additional').html(text);
         }
     }
 }(jQuery));
