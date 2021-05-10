@@ -2,7 +2,7 @@
   "title": "Slicedom",
   "useSideMenu": true,
   "lineBreaks": "gfm",
-  "additionalFooterText": "",
+  "additionalFooterText": "<span style='text-align:center'>Sabiduría en finas rebanadas</span>",
   "anchorCharacter": "&para;",
   "tocAnchor": "[ &uarr; ]"
 }
