@@ -43,13 +43,13 @@ Derives some values from the contents of a string of bytes. The string is broken
     - c -> a signed char (8-bit) value.
         - C -> an unsigned char (octet) value.
     - U -> a Unicode character number. Encodes to a character in character mode and UTF-8 (or UTF-EBCDIC in EBCDIC platforms) in byte mode
-- <mark>**Integers big-endian byte-order**: use these pack codes if you exchange binary data, across the network, with some system that you know next to nothing about. This order has been chosen as the **network order**.</mark>
+- **Integers big-endian byte-order**: <mark>use these pack codes if you exchange binary data, across the network, with some system that you know next to nothing about</mark>. This order has been chosen as the **network order**.
     - n -> an unsigned short (16-bit) in "network" (big-endian) order.
         - N -> an unsigned long (32-bit) in "network" (big-endian) order.
 - **Integers little-endian byte-order**
     - v -> an unsigned short (16-bit) in "VAX" (little-endian) order.
         - V -> an unsigned long (32-bit) in "VAX" (little-endian) order.
-- <mark>**Integer pack codes that result in fixed number of bytes**: non-portable between processors and operating systems because they obey native byte-order and [Endianness](./Endianness.md)</mark>
+- **Integer pack codes that result in fixed number of bytes**: <mark>non-portable between processors and operating systems</mark> because they obey native byte-order and [Endianness](./Endianness.md)
     - s -> a signed short (16-bit) value.
         - S -> an unsigned short value.
     - l -> a  signed long (32-bit) value.
