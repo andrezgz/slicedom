@@ -1,4 +1,4 @@
 title: Slicedom
 description: Sabiduría en finas rebanadas
-theme: jekyll-theme-cayman
+remote_theme: pages-themes/cayman@v0.2.0
 show_downloads: false
