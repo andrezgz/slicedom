@@ -3716,7 +3716,7 @@ function googlemapsReady() {
             var lang = classes.substring(5);
             $this.removeClass(classes);
             $this.addClass(lang);
-            var x = hljs.highlightBlock($this[0]);
+            var x = hljs.highlightElement($this[0]);
         });
     }
 
