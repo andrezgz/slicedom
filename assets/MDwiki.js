@@ -442,10 +442,11 @@ var inline = {
   nolink: /^!?\[((?:\[[^\]]*\]|[^\[\]])*)\]/,
   strong: /^__([\s\S]+?)__(?!_)|^\*\*([\s\S]+?)\*\*(?!\*)/,
   em: /^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,
+  mark: /^==([\s\S]+?)==(?!=)/,
   code: /^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,
   br: /^ {2,}\n(?!\s*$)/,
   del: noop,
-  text: /^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/
+  text: /^[\s\S]+?(?=[\\<!\[_=*`]| {2,}\n|$)/
 };
 
 inline._inside = /(?:\[[^\]]*\]|[^\]]|\](?=[^\[]*\]))*/;
@@ -648,6 +649,15 @@ InlineLexer.prototype.output = function(src) {
       out += '<code>'
         + escape(cap[2], true)
         + '</code>';
+      continue;
+    }
+
+    // mark
+    if (cap = this.rules.mark.exec(src)) {
+      src = src.substring(cap[0].length);
+      out += '<mark>'
+        + this.output(cap[2] || cap[1])
+        + '</mark>';
       continue;
     }
 
