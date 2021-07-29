@@ -1,0 +1,78 @@
+{
+  "main": {
+    "id": "1be51040f0997f9a",
+    "type": "split",
+    "children": [
+      {
+        "id": "dc33cde0270315ef",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "reference/Endianness.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "ad2a9c58c144ea34",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "bb0c22ed3e6c1a3e",
+        "type": "leaf",
+        "state": {
+          "type": "file-explorer",
+          "state": {}
+        }
+      },
+      {
+        "id": "520e6ef43efddb84",
+        "type": "leaf",
+        "state": {
+          "type": "search",
+          "state": {
+            "query": "",
+            "matchingCase": false,
+            "explainSearch": false,
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical"
+          }
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "right": {
+    "id": "b643c98f4fa6d6d2",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "3b08cbef21f46361",
+        "type": "leaf",
+        "state": {
+          "type": "backlink",
+          "state": {
+            "file": "reference/Endianness.md",
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical",
+            "showSearch": false,
+            "searchQuery": "",
+            "backlinkCollapsed": false,
+            "unlinkedCollapsed": true
+          }
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "active": "dc33cde0270315ef",
+  "lastOpenFiles": [
+    "reference/Endianness.md"
+  ]
+}
