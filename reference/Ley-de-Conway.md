@@ -30,4 +30,4 @@ Creada a partir de Melvin Conway, quien introdujo la idea en 1967. Sus palabras 
 
 > Any organization that designs a system (defined broadly) will produce a design whose structure is a copy of the organization's communication structure.
 >
-> -- Melvin E. Conway
+> -- Melvin E. Conway
