@@ -192,7 +192,7 @@ When she's done working on the feature, she'll then perform [Mainline Integratio
 
 If Scarlett works on <mark>more than one feature at the same time, she'll open a separate branch for each one</mark>.
 
-#### When to use Future Branching
+#### When to use Feature Branching
 
 Feature Branching is an alternative to [Continuous Integration](https://martinfowler.com/articles/branching-patterns.html#continuous-integration).
 
