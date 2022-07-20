@@ -1,6 +1,9 @@
 # Perl - Unicode
 
-TAGS: #development #apunte
+TAGS:
+
+- [Perl](Perl.md)
+- [Unicode](Unicode.md)
 
 SOURCES:
 
@@ -9,10 +12,161 @@ SOURCES:
 - [perlrecharclass - Perl Regular Expression Character Classes](https://perldoc.perl.org/perlrecharclass)
 - [perlre - Perl regular expressions](https://perldoc.perl.org/perlre)
 - [perlrebackslash - Perl Regular Expression Backslash Sequences and Escapes](https://perldoc.perl.org/perlrebackslash)
+- [Unicode In Five Minutes](https://richardjharris.github.io/unicode-in-five-minutes.html) - Richard Harris
+- [All sorts of things you can get wrong in Unicode, and why](https://richardjharris.github.io/all-sorts-of-things-you-can-get-wrong-in-unicode-and-why.html) - Richard Harris
+- [Why does modern Perl avoid UTF-8 by default?](https://stackoverflow.com/questions/6162484/why-does-modern-perl-avoid-utf-8-by-default)
+- [𝙎𝙞𝙢𝙥𝙡𝙚𝙨𝙩 ℞: 𝟕 𝘿𝙞𝙨𝙘𝙧𝙚𝙩𝙚 𝙍𝙚𝙘𝙤𝙢𝙢𝙚𝙣𝙙𝙖𝙩𝙞𝙤𝙣𝙨](https://stackoverflow.com/questions/6162484/why-does-modern-perl-avoid-utf-8-by-default/6163129#6163129) - Tom Christiansen (tchrist)
+- [JSON, Unicode, and Perl ... Oh My!](https://perl.com/article/json-unicode-and-perl-oh-my-/)
 
 ---
 
-## perlrebackslash
+## Normalization
+
+It doesn't matter what form you use as long as you are consistent.
+
+You almost always need access to the functions from the standard [Unicode::Normalize](https://metacpan.org/pod/Unicode::Normalize) module various types of decompositions. `export PERL5OPTS=-MUnicode::Normalize=NFD,NFKD,NFC,NFKD`, and then always run incoming stuff through NFD and outbound stuff from NFC.
+
+See `nfc`, `nfd`, `nfkd`, and `nfkc`.
+
+Process input through NFD and output through NFC.
+
+```perl
+#!/usr/bin/perl
+use Unicode::Normalize;
+my $norm = NFD($str);
+```
+
+[Unicode::Stringprep](https://metacpan.org/pod/Unicode::Stringprep) prepares Unicode text strings in order to increase the likelihood that string input and string comparison work in ways that make sense for typical users throughout the world. The `stringprep` protocol is useful for protocol identifier values, company and personal names, internationalized domain names, and other text strings.
+
+> **You are going to have filesystem issues on filesystems**. Some filesystems silently enforce a conversion to NFC; others silently enforce a conversion to NFD. And others do something else still. Some even ignore the matter altogether, which leads to even greater problems. So you have to do your own NFC/NFD handling to keep sane.
+
+## Casefolding
+
+```perl
+#!/usr/bin/perl
+use Unicode::CaseFold; # or: use v5.16;
+sort { fc($a) cmp fc($b) } @stuff;
+```
+
+## Comparing & Sorting
+
+You should use the [Unicode::Collate](https://metacpan.org/pod/Unicode::Collate) module.
+
+String comparisons in Perl using `eq`, `ne`, `lc`, `cmp`, `sort`, `&c&cc` are always wrong. So instead of `@a = sort @b`, you need `@a = Unicode::Collate->new->sort(@b)`. Might as well add that to your `export PERL5OPTS=-MUnicode::Collate`. You can cache the key for binary comparisons.
+
+Case-insensitive comparisons need to check for whether two things are the same letters no matter their diacritics and such. The easiest way to do that is whit `Unicode::Collate->new(level => 1)->cmp($a, $b)`. There are also `eq` methods and such, and you should probably learn about the match and substr methods, too. These are have distinct advantages over the Perl built-ins.
+
+Sometimes that's still not enough, and you need [the Unicode::Collate::Locale](https://metacpan.org/pod/Unicode::Collate::Locale) module instead, as in `Unicode::Collate::Locale->new(locale => "de__phonebook", level => 1)->cmp($a, $b)` instead. Consider that `Unicode::Collate::->new(level => 1)->eq("d", "ð")` is true, but `Unicode::Collate::Locale->new(locale=>"is",level => 1)->eq("d", " ð")` is false. Similarly, `ae` and `æ` are `eq` if you don't use locales, or if you use the English one, but they are different in the Icelandic locale.
+
+```perl
+#!/usr/bin/perl
+use Unicode::Collate::Locale;
+my $collator = Unicode::Collate::Locale->new(locale => 'DE');
+my @sorted = $collator->sort(@array);
+$collator->cmp($word, $another_word); # -> -1, 0 or 1
+```
+
+## Unicode and internationalised domain names
+
+In Perl, one can use [Net::IDN::Encode](https://metacpan.org/module/Net::IDN::Encode) which will also perform Punycode conversion.
+
+## The problem of 'user characters'
+
+In Perl at least, everything (substr, length, index, reverse...) works on the level of codepoints. This is often not what you want, because what a user considers to be a character such as `ў` is actually two codepoints (`y` + `◌̆`).
+
+[On dual-living Unicode::GCString in v5.16](https://www.nntp.perl.org/group/perl.perl5.porters/2011/10/msg178687.html)
+
+Even seemingly innocuous things like `printf "%-10s", $str` breaks completely for combining characters, double-width characters (e.g. Chinese/Japanese) or zero-width characters.
+
+Fortunately Perl provides the `\X` regular expression metachar which matches exactly one 'extended grapheme cluster', i.e. what a user would consider a character to be.
+
+A more robust solution is to install [Unicode::GCString](https://metacpan.org/module/Unicode::GCString):
+
+```perl
+#!/usr/bin/perl
+use Unicode::GCString;
+use Unicode::Normalize;
+use utf8;
+use open qw(:std :encoding(UTF-8));
+
+my $s = NFD("crème brûlée"); # ensure combining marks get their own codepoint
+my $g = Unicode::GCString->new($s);
+
+print $g->length, "\n"; # 12, not 15
+print reverse(@$g), "\n"; # 'eélûrb emèrc', not 'éel̂urb em̀erc'
+print $g->substr(0,5), "\n"; # 'crème', not 'crèm'
+print $g->substr(0,3), "\n"; # 'crè', not 'cre'
+
+print "1234512345123451234512345|\n";
+printf "%s%*s|\n", $g, (25 - $g->columns), ''; # 25 columns long (ᵔᴥᵔ)
+
+printf "%-25s|\n", $s; # 22 columns long (╯°□°）╯︵ ┻━┻
+```
+
+See `uwc` and `unifmt` from [Unicode::Tussle - Tom's Unicode Scripts So Life is Easier](https://metacpan.org/pod/Unicode::Tussle)
+
+## Line breaks
+
+In Perl, this has all been handled for you - just use [Unicode::LineBreak](https://metacpan.org/module/Unicode::LineBreak).
+
+## ENV variables
+
+All Perl source code should be in UTF-8 by default. You can get that with `use utf8` or `export PERL5OPTS=-Mutf8`.
+
+The Perl DATA handle should be UTF-8. You will have to do this on a per-package basis, as in `binmode(DATA, ":encoding(UTF-8)")`.
+
+Program arguments to Perl scripts should be understood to be UTF-8 by default. `export PERL_UNICODE=A`, or `perl -CA`, or `export PERL5OPTS=-CA`.
+
+The standard input, output, and error streams should default to UTF-8. export `PERL_UNICODE=S` for all of them, or I, O, and/or E for just some of them. This is like `perl -CS`.
+
+Any other handles opened by Perl should be considered UTF-8 unless declared otherwise; `export PERL_UNICODE=D` or with `i` and `o` for particular ones of these; `export PERL5OPTS=-CD` would work. That makes `-CSAD` for all of them.
+
+Cover both bases plus all the streams you open with `export PERL5OPTS=-Mopen=:utf8,:std`. See `uniquote` from [Unicode::Tussle - Tom's Unicode Scripts So Life is Easier](https://metacpan.org/pod/Unicode::Tussle)
+
+You don't want to miss UTF-8 encoding errors. Try `export PERL5OPTS=-Mwarnings=FATAL,utf8`. And make sure your input streams are always binmoded to `:encoding(UTF-8)`, not just to `:utf8`.
+
+Code points between 128–255 should be understood by Perl to be the corresponding Unicode code points, not just unpropertied binary values. `use feature "unicode_strings"` or `export PERL5OPTS=-Mfeature=unicode_strings`. That will make `uc("\xDF") eq "SS"` and `"\xE9" =~ /\w/`. A simple export `PERL5OPTS=-Mv5.12` or better will also get that.
+
+Named Unicode characters are not by default enabled, so add `export PERL5OPTS=-Mcharnames=:full,:short,latin,greek` or some such. See `uninames` and `tcgrep` from [Unicode::Tussle - Tom's Unicode Scripts So Life is Easier](https://metacpan.org/pod/Unicode::Tussle)
+
+## Regular expressions
+
+To work with integers, then you are going to have to run your `\d+` captures through the [Unicode::UCD::num](https://metacpan.org/pod/Unicode::UCD#num()) function because Perl's built-in *atoi*(3) isn't currently clever enough.
+
+All your Perl code involving `a-z` or `A-Z` and such **MUST BE CHANGED**, including` m//`,` s///`, and `tr///`. Getting the right properties, and understanding their casefolds, is harder than you might think. See `unichars` and `uniprops` from [Unicode::Tussle - Tom's Unicode Scripts So Life is Easier](https://metacpan.org/pod/Unicode::Tussle)
+
+Code that uses `[a-zA-Z]` can't be changed to `\pL` or `\p{Letter}`; it needs to use `\p{Alphabetic}`. Not all alphabetics are letters.
+
+You need to use `\p{Upper}` instead of `\p{Lu}`. `\p{Lowercase}` and `\p{Lower}` are different from `\p{Ll}` and `\p{Lowercase_Letter}`.
+
+If you are looking for Perl variables, you need to look for `/[\$\@\%]\p{IDS}\p{IDC}*/` (not `/[\$\@\%]\w+/`), and even that isn't thinking about the punctuation variables or package variables.
+
+If you are checking for whitespace, then you should choose between `\h` and `\v`, depending. And you should never use `\s`, since it **DOES NOT MEAN** `[\h\v]`, contrary to popular belief.
+
+You should use `\R` for a line boundary. It matches any Unicode linebreak sequence (including `\n`, `\r\n` and six others)
+
+`\p, \P`
+
+Match any codepoint possessing (or not possessing) a Unicode property.
+
+Common ones are `\pL` (Letter), `\pU` (Uppercase), `\pS` (Symbol), or even `\p{script=Latin}`, `\p{East_Asian_Width=Wide}`, `\p{Numeric_Value=4}`.
+
+See [perluniprops](http://perldoc.perl.org/perluniprops.html) for a big list.
+
+Built-in character classes such as `\w`, `\b`, `\s` and `\d` are Unicode-aware since Perl 5.6 (though you need to make sure your string or pattern has the UTF8 flag on!) Disable this with the `/a` flag (see [perlre](http://perldoc.perl.org/perlre.html#Character-set-modifiers)).
+
+`\X`
+
+Match an extended grapheme cluster, which is basically a user-visible 'character'. Use it instead of `.` unless you want codepoints.
+
+E.g. to match a vowel with optional diacritics or marks ([source](http://www.perl.com/pub/2012/05/perlunicook-match-unicode-grapheme-cluster-in-regex.html)) :
+
+```perl
+my $nfd = NFD($string);
+$nfd =~ / (?=[aeiou]) \X /xi;
+```
+
+Now consider how to match the pattern CVCV (consonsant, vowel, consonant, vowel) in the string `niño`. Its NFD form — which you had darned well better have remembered to put it in — becomes `nin\x{303}o`. Now what are you going to do? Even pretending that a vowel is `[aeiou]` (which is wrong, by the way), you won't be able to do something like `(?=[aeiou])\X)` either, because even in NFD a code point like `ø` **does not decompose**! However, it will test equal to an `o` using the UCA comparison I just showed you. You can't rely on NFD, you have to rely on UCA.
 
 ### Hexadecimal escapes
 
@@ -38,9 +192,7 @@ $str =~ /P\x2B/;   # No match, "\x2B" is "+" and taken literally.
 
 [Unicode Character Search](https://www.fileformat.info/info/unicode/char/search.htm)
 
-## perlrecharclass
-
-Perl Regular Expression Character Classes
+### Perl Regular Expression Character Classes
 
 <https://perldoc.perl.org/perlrecharclass#Backslash-sequences>
 
@@ -60,9 +212,9 @@ Perl Regular Expression Character Classes
 \PP, \P{Prop}  Match a character that doesn't have the Unicode property
 ```
 
-### Backslash sequences
+#### Backslash sequences
 
-#### Digits
+##### Digits
 
 `\d` matches a single character considered to be a decimal *digit*.
 
@@ -84,7 +236,7 @@ The design intent is for `\d` to exactly match the set of characters that can sa
 
 Any character not matched by `\d` is matched by `\D`.
 
-#### Word characters
+##### Word characters
 
 `\w` and `\W`
 
@@ -109,7 +261,7 @@ There are a number of security issues with the full Unicode list of word charact
 
 Any character not matched by `\w` is matched by `\W`.
 
-#### Whitespace
+##### Whitespace
 
 `\s` and `\S`
 
@@ -130,7 +282,7 @@ Any character not matched by `\w` is matched by `\W`.
         - otherwise ...
             - `\s` matches `[\t\n\f\r ]` and, starting in Perl v5.18, the vertical tab, `\cK`. Note that this list doesn't include the non-breaking space.
 
-#### `\N`
+##### `\N`
 
 `\N`, available starting in v5.12, like the dot, matches any character that is not a newline. `\N` is not influenced by the *single line* regular expression modifier.
 
@@ -142,7 +294,7 @@ The form `\N{...}` may mean something completely different.
     - Both `\N{DIGIT NINE}` and `\N{U+0039}` represent the digit 9.
     - For example, none of `\N{COLON}`, `\N{4F}`, and `\N{F4}` contain legal quantifiers, so Perl will try to find characters whose names are respectively `COLON`, `4F`, and `F4`.
 
-##### charnames
+###### charnames
 
 <https://perldoc.perl.org/charnames>
 
@@ -153,7 +305,7 @@ Note that `\N{U+...}`, where the `...` is a hexadecimal number, also inserts a c
 
 > NOTE: `\N{...}` can mean a regex quantifier instead of a character name, when the `...` is a number (or comma separated pair of numbers)
 
-#### Unicode Properties
+##### Unicode Properties
 
 <https://perldoc.perl.org/perlrecharclass#Unicode-Properties>
 
@@ -172,9 +324,9 @@ What a <mark>Unicode property matches is never subject to locale rules</mark>, a
 
 Unicode properties are defined *only* on Unicode code points. Starting in v5.20, when matching against `\p` and `\P`, Perl treats non-Unicode code points (those above the legal Unicode maximum of 0x10FFFF) as if they were typical unassigned Unicode code points.
 
-### Bracketed Character Classes
+#### Bracketed Character Classes
 
-#### Backslash Sequences
+##### Backslash Sequences
 
 <https://perldoc.perl.org/perlrecharclass#Backslash-Sequences>
 
@@ -191,7 +343,7 @@ Examples:
                    # character, nor a parenthesis.
 ```
 
-#### POSIX Character Classes
+##### POSIX Character Classes
 
 <https://perldoc.perl.org/perlrecharclass#POSIX-Character-Classes>
 
@@ -432,8 +584,6 @@ word
         - otherwise ...
             - The POSIX class matches the same as the ASCII range counterpart.
 
-## perlre
-
 ### Character set modifiers
 
 <https://perldoc.perl.org/perlre#Character-set-modifiers>
@@ -502,15 +652,55 @@ Another mnemonic for this modifier is *Depends*, as the rules actually used depe
 
 Unless the pattern or string are encoded in UTF-8, only ASCII characters can match positively.
 
-Here are some examples of how that works on an ASCII platform:
+Example of how that works on an **ASCII** platform:
 
 ```perl
-$str =  "\xDF";      # $str is not in UTF-8 format.
+$str =  "\xDF";      # Character LATIN SMALL LETTER SHARP S (ß)
+                     # $str is not in UTF-8 format.
 $str =~ /^\w/;       # No match, as $str isn't in UTF-8 format.
-$str .= "\x{0e0b}";  # Now $str is in UTF-8 format !!!
+$str .= "\x{0e0b}";  # Added character THAI CHARACTER SO SO (ซ)
+                     # Now $str is in UTF-8 format !!!
 $str =~ /^\w/;       # Match! $str is now in UTF-8 format.
 chop $str;
 $str =~ /^\w/;       # Still a match! $str remains in UTF-8 format.
+```
+
+Same example printing ouput:
+
+```perl
+use feature 'say';
+
+binmode STDOUT, ':encoding(UTF-8)';
+
+# Unless the pattern or string are encoded in UTF-8,
+# only ASCII characters can match positively.
+# Example of how that works on an **ASCII** platform:
+
+$str =  "\N{U+00DF}";               # Character LATIN SMALL LETTER SHARP S (ß)
+                                    # Unicode named character \N{...}
+say $str;                           # ß
+say utf8::is_utf8($str) ? 'utf8'    # $str is in UTF-8 format.
+                        : 'no utf8';
+say $str =~ /^\w/ ? 'match'         # match ($str in UTF-8)
+                  : 'no-match';
+
+$str =  "\xDF";                     # Character LATIN SMALL LETTER SHARP S (ß)
+                                    # Hexadecimal escaped character
+say $str;                           # ß
+say utf8::is_utf8($str) ? 'utf8'
+                        : 'no utf8';# $str is not in UTF-8 format.
+say $str =~ /^\w/ ? 'match'
+                  : 'no-match';     # no-match ($str NOT in UTF-8)
+
+$str .= "\x{0e0b}";                 # Added character THAI CHARACTER SO SO (ซ)
+say $str;                           # ßซ
+say utf8::is_utf8($str) ? 'utf8'    # Now $str is in UTF-8 format !!!
+                        : 'no utf8';
+say $str =~ /^\w/ ? 'match'         # match ($str in UTF-8)
+                  : 'no-match';
+chop $str;                          # Removed character THAI CHARACTER SO SO (ซ)
+say $str =~ /^\w/ ? 'match'         # match ($str in UTF-8)
+                  : 'no-match';
 ```
 
 <mark>Because of the unexpected behaviors associated with this modifier, you probably should only explicitly use it to maintain weird backward compatibilities.</mark>
@@ -590,15 +780,7 @@ If there's no `\w` in `s1` nor in `s2`, why does their concatenation have one?
 
 This anomaly stems from Perl's attempt to not disturb older programs that didn't use Unicode, along with Perl's desire to add Unicode support seamlessly. But the result turned out to not be seamless. (By the way, you can choose to be warned when things like this happen. See `encoding::warnings`.)
 
-`use feature 'unicode_strings'` was added, starting in Perl v5.12, to address this problem.
-
-## perluniprops
-
-Index of Unicode Version 13.0.0 character properties in Perl
-
-For most purposes, access to Unicode properties from the Perl core is through regular expression matches.
-
-This document merely lists all available properties and does not attempt to explain what each property really means. There is a brief description of each Perl extension; see ["Other Properties" in perlunicode](https://perldoc.perl.org/perlunicode#Other-Properties) for more information on these. There is some detail about Blocks, Scripts, General_Category, and Bidi_Class in [perlunicode](https://perldoc.perl.org/perlunicode), but to find out about the intricacies of the official Unicode properties, refer to the Unicode standard. A good starting place is <http://www.unicode.org/reports/tr44/>.
+`use feature 'unicode_strings'` was added, starting in Perl v5.12, to address this problem. Check [What is it people have against unicode_strings?](https://youtu.be/FlGpiS39NMY?t=3024)
 
 ### Properties accessible through `\p{}` and `\P{}`
 
@@ -620,7 +802,7 @@ Example: `\p{Greek}` is a just a shortcut for `\p{Script_Extensions=Greek}`
 
 White space, hyphens, and underscores are normally ignored everywhere between the {braces}, and hence can be freely added or removed even if the `/x` modifier hasn't been specified on the regular expression.
 
-##### Tighter rules
+#### Tighter rules
 
 A `T` at the beginning of an entry means that tighter (stricter) rules are used for that entry:
 
@@ -632,10 +814,11 @@ Single form (`\p{name}`) tighter rules:
 - You can freely add or remove white space adjacent to (but within) the braces without affecting the meaning.
 
 Compound form (`\p{name=value}` or `\p{name:value}`) tighter rules:
+
 - The tighter rules given above for the single form apply to everything to the right of the colon or equals; the looser rules still apply to everything to the left.
 - You can freely add or remove white space adjacent to (but within) the braces and the colon or equal sign.
 
-##### Varieties of obsolescence
+#### Varieties of obsolescence
 
 - `S` Stabilized: the property will not be maintained nor extended for newly encoded characters.
 - `D` Deprecated: its use is strongly discouraged, so much so that a warning will be issued if used, unless the regular expression is in the scope of a `no warnings 'deprecated'` statement.
@@ -697,27 +880,27 @@ All non-essential underscores are removed in the display of the short names belo
 ```text
       NAME                           INFO
 
-  \p{ASCII}               \p{Block=Basic_Latin} (128)
+  \p{ASCII}               \p{Block=Basic_Latin} (128)
 X \p{Basic_Latin}         \p{ASCII} (= \p{Block=Basic_Latin}) (128)
-  \p{Block: ASCII}        \p{Block=Basic_Latin} (128)
-  \p{Block: Basic_Latin}  (Short: \p{Blk=ASCII}) (128: [\x00-\x7f])
+  \p{Block: ASCII}        \p{Block=Basic_Latin} (128)
+  \p{Block: Basic_Latin}  (Short: \p{Blk=ASCII}) (128: [\x00-\x7f])
 
 
-  \p{Block: Latin_1}      \p{Block=Latin_1_Supplement} (128)
-  \p{Block: Latin_1_Sup}  \p{Block=Latin_1_Supplement} (128)
-  \p{Block: Latin_1_Supplement} (Short: \p{Blk=Latin1}) (128: [\x80-\xff])
-  \p{Block: Latin_Ext_A}  \p{Block=Latin_Extended_A} (128)
-  \p{Block: Latin_Ext_Additional} \p{Block= Latin_Extended_Additional} (256)
-  \p{Block: Latin_Ext_B}  \p{Block=Latin_Extended_B} (208)
-  \p{Block: Latin_Ext_C}  \p{Block=Latin_Extended_C} (32)
-  \p{Block: Latin_Ext_D}  \p{Block=Latin_Extended_D} (224)
-  \p{Block: Latin_Ext_E}  \p{Block=Latin_Extended_E} (64)
-  \p{Block: Latin_Extended_A} (Short: \p{Blk=LatinExtA}) (128: U+0100..017F)
-  \p{Block: Latin_Extended_Additional} (Short: \p{Blk= LatinExtAdditional}) (256: U+1E00..1EFF)
-  \p{Block: Latin_Extended_B} (Short: \p{Blk=LatinExtB}) (208: U+0180..024F)
-  \p{Block: Latin_Extended_C} (Short: \p{Blk=LatinExtC}) (32: U+2C60..2C7F)
-  \p{Block: Latin_Extended_D} (Short: \p{Blk=LatinExtD}) (224: U+A720..A7FF)
-  \p{Block: Latin_Extended_E} (Short: \p{Blk=LatinExtE}) (64: U+AB30..AB6F)
+  \p{Block: Latin_1}      \p{Block=Latin_1_Supplement} (128)
+  \p{Block: Latin_1_Sup}  \p{Block=Latin_1_Supplement} (128)
+  \p{Block: Latin_1_Supplement} (Short: \p{Blk=Latin1}) (128: [\x80-\xff])
+  \p{Block: Latin_Ext_A}  \p{Block=Latin_Extended_A} (128)
+  \p{Block: Latin_Ext_Additional} \p{Block= Latin_Extended_Additional} (256)
+  \p{Block: Latin_Ext_B}  \p{Block=Latin_Extended_B} (208)
+  \p{Block: Latin_Ext_C}  \p{Block=Latin_Extended_C} (32)
+  \p{Block: Latin_Ext_D}  \p{Block=Latin_Extended_D} (224)
+  \p{Block: Latin_Ext_E}  \p{Block=Latin_Extended_E} (64)
+  \p{Block: Latin_Extended_A} (Short: \p{Blk=LatinExtA}) (128: U+0100..017F)
+  \p{Block: Latin_Extended_Additional} (Short: \p{Blk= LatinExtAdditional}) (256: U+1E00..1EFF)
+  \p{Block: Latin_Extended_B} (Short: \p{Blk=LatinExtB}) (208: U+0180..024F)
+  \p{Block: Latin_Extended_C} (Short: \p{Blk=LatinExtC}) (32: U+2C60..2C7F)
+  \p{Block: Latin_Extended_D} (Short: \p{Blk=LatinExtD}) (224: U+A720..A7FF)
+  \p{Block: Latin_Extended_E} (Short: \p{Blk=LatinExtE}) (64: U+AB30..AB6F)
 
 
   \p{Script: Latin}       (Short: \p{Sc=Latn}) (1374: [A-Za-z\xaa\xba\xc0-\xd6\xd8-\xf6\xf8-\xff],U+0100..02B8, U+02E0..02E4,U+1D00..1D25, U+1D2C..1D5C, U+1D62..1D65...)
@@ -736,3 +919,194 @@ X \p{Latin_1_Sup}         \p{Latin_1_Supplement} (= \p{Block=
 X \p{Latin_1_Supplement}  \p{Block=Latin_1_Supplement} (Short:
                             \p{InLatin1}) (128)
 ```
+
+## Wrong Perl Unicode assumptions
+
+### Code that believes you can use Perl printf widths to pad and justify Unicode data is broken and wrong
+
+You can't, because some characters have no width (combining accents, control characters) while some have double-width (CJKV ideographs, 'full-width' letters).
+
+Most likely printf will interpret each codepoint as a character with a width of one, so for things like Chinese it'll pad completely wrong.
+
+For Perl the solution is [Unicode::GCString](https://metacpan.org/module/Unicode::GCString).
+
+### Code that believes `\p{InLatin}` is the same as `\p{Latin}` is heinously broken
+
+`\p{InLatin}` does not exist in my Perl 5.16, but `\p{InLatin1}` does: it's the same as `\p{Block=Latin1}` (filters by block).
+
+`\p{Latin}` is equivalent to `\p{Script=Latin}` (filters by script). See [perluniprops](http://perldoc.perl.org/perluniprops.html) for gory details.
+
+These are clearly different; the Latin-1 block contains all kinds of junk, including control characters, superscripts, fractions and currency signs. In the other direction, Latin can be found in the ASCII block, and elsewhere.
+
+### Code that believes that `\p{InLatin}` is almost ever useful is almost certainly wrong
+
+Again, assuming `\p{InLatin1}`, it would be useless as the block has such a diverse set of characters.
+
+### Code that believes that given `$FIRST_LETTER` as the first letter in some alphabet and `$LAST_LETTER` as the last letter in that same alphabet, that `[${FIRST_LETTER}-${LAST_LETTER}]` has any meaning whatsoever is almost always completely broken and wrong and meaningless
+
+Unicode places no semantic value on the codepoint number. It may or may not be related to nearby codepoints; if it is, it's usually just because that was convenient when assigning them.
+
+Alphabets vary by locale; while `[a-z]` works OK for English (many may disagree...), the Danish/Norweigian alphabet includes æ, ø, and å at the end. `[a-å]` matches a huge chunk of ASCII and Latin-1, included most capital accented characters, Latin-1 control characters, and punctuation. Not ideal.
+
+### Code that assumes `\w` contains only letters, digits, and underscores is wrong
+
+`\w` is generally locale specific for any POSIX-compatible regex engine.
+
+For Perl 5.14+, `\w` matches "anything that is a letter or digit *somewhere* in the world", but *also* includes "connector punctuation marks and Unicode marks" ([perlre](http://perldoc.perl.org/perlre.html)). This means vowel signs and combining accents.
+
+Use the regular expression `/a` flag to get a more legacy behaviour where `\w` is just `[a-z0-9_]` and `\d` is `[0-9]`. This modifier stands for ASCII-restrict (or ASCII-safe). This modifier may be doubled-up to increase its effect (`/aa`).
+
+In other languages, see documentation to see which definition of `\w` applies.
+
+### Code that assumes Perl uses UTF‑8 internally is wrong. Code that assumes Perl code points are limited to 0x10_FFFF is wrong
+
+-> [Perl - utf8 & UTF-8](Perl-utf8-UTF-8.md)
+
+- Perl uses a [very permissive variant](http://perldoc.perl.org/Encode.html#UTF-8-vs.-utf8-vs.-UTF8) of UTF-8 it calls 'utf8' which allows very high codepoints (beyond 0x10_FFFF) and illegal characters or sequences.
+- Perl may use ISO-8859-1 if the string's UTF8 flag is unset.
+- On EBCDIC platforms, different encodings may be used.
+
+The idea is that Perl's internal representation is abstract; you should not rely on it; you should be blissfully unaware of it and just [decode](http://perldoc.perl.org/Encode.html) input data into Perl's representation, and then [encode](http://perldoc.perl.org/Encode.html) when outputting it.
+
+Unfortunately that is not true of Perls before 5.14 due to a variety of bugs, including [The Unicode Bug](#The-Unicode-Bug).
+
+### Code that assumes you can set `$/` to something that will work with any valid line separator is wrong
+
+The set of valid Unicode linebreak sequences requires a regex, but `$/` can only be a single string. You can use `\R` in regular expressions to do The Right Thing™.
+
+See perlrebackslash: <http://perldoc.perl.org/perlrebackslash.html#Misc>
+
+`\R` matches a generic newline; that is, anything considered a linebreak sequence by Unicode.
+
+### MUCH ADO ABOUT `\X`
+
+So `\X` matches an 'extended grapheme cluster' which is basically what a user would think of as a character. It accounts for decomposed Hangul, Latin characters with combining diacritics, and so on.
+
+#### Code that uses `\PM\pM*` to find grapheme clusters instead of using `\X` is broken and wrong
+
+`\PM\pM*` means a non-mark char followed by zero or more mark chars. It has a couple of major differences I think:
+
+- `\X` handles decomposed Hangul and regional indicators
+- `\X` uses Unicode's Grapheme_Cluster_Break properties instead of the Mark general category.
+
+In short, it's much better, but more complicated, so PCRE implements `\X` as `\PM\pM*` instead.
+
+#### Code that assumes `\X` can never start with a `\p{Mark}` character is wrong
+
+Vowel signs (again!) are in `\p{Grapheme_Base}` but also `\p{Mark}`, so `\X` may start with them. This makes sense if you think about it.
+
+If it's at the start of the string, `\X` will match anything.
+
+#### Code that assumes there is a limit to the number of code points in a row that just one `\X` can match is wrong
+
+This can be seen from the grammar of `\X`:
+
+```text
+# All the tables with _X_ in their names are used in defining \X handling,
+# and are based on the Unicode GCB property.  Basically, \X matches:
+#   CR LF
+#   | Prepend* Begin Extend*
+#   | .
+# Begin is:           ( Special_Begin | ! Control )
+# Begin is also:      ( Regular_Begin | Special_Begin )
+#   where Regular_Begin is defined as ( ! Control - Special_Begin )
+# Special_Begin is:   ( Regional-Indicator+ | Hangul-syllable )
+# Extend is:          ( Grapheme_Extend | Spacing_Mark )
+# Control is:         [ GCB_Control | CR | LF ]
+# Hangul-syllable is: ( T+ | ( L* ( L | ( LVT | ( V | LV ) V* ) T* ) ))
+```
+
+(Prepend, Extend, L/T/V etc. come from the Grapheme_Cluster_Break property).
+
+So it'll slurp up all regional indicator characters and any number of L/V/T components in a decomposed Hangul syllable construction.
+
+#### Code that assumes that `\X` can never hold two non-`\p{Mark}` characters is wrong
+
+Hangul components aren't in `\p{Mark}`, for example. There are also `\p{Grapheme_Extend}` code points that lie outside `\p{Mark}`, such as U+200C and U+200D.
+
+## Boilerplate for Unicode-Aware Code
+
+-> [Boilerplate](Boilerplate.md)
+
+1. Set your the env variable `PERL_UNICODE="AS"`. This makes all Perl scripts decode `@ARGV` as UTF‑8 strings, and sets the encoding of all three of stdin, stdout, and stderr to UTF‑8. Both these are global effects, not lexical ones.
+2. At the top of your source file (program, module, library, do), prominently assert you are running **perl version 5.12 or better**:
+    - `use v5.12; # minimal for unicode string feature`
+    - `use v5.14; # optimal for unicode string feature`
+3. Enable **warnings**, since the previous declaration only enables strictures and features, not warnings.
+    - Promote Unicode warnings into exceptions, so use both these lines, not just one of them. Note however that under v5.14, the utf8 warning class comprises three other subwarnings which can all be separately enabled: nonchar, surrogate, and non_unicode.
+    - `use warnings;`
+    - `use warnings qw( FATAL utf8 );`
+4. Declare that this source unit is encoded as UTF‑8:
+    - `use utf8;`
+5. Declare that anything that opens a filehandle *within this lexical scope but not elsewhere* is to assume that that stream is encoded in UTF‑8 unless you tell it otherwise. That way you do not affect other module's or other program's code.
+    - `use open qw( :encoding(UTF-8) :std );`
+6. Enable named characters via `\N{CHARNAME}`.
+    - `use charnames qw( :full :short );`
+7. If you have a DATA handle, you must explicitly set its encoding. If you want this to be UTF‑8, then say:
+    - `binmode(DATA, ":encoding(UTF-8)");`
+
+```perl
+use 5.014;
+
+use utf8;
+use strict;
+use autodie; # not Unicode related
+use warnings;
+use warnings qw< FATAL utf8 >;
+use open qw< :std :encoding(UTF-8) >;
+use charnames qw< :full >;
+use feature qw< unicode_strings >;
+
+use File::Basename qw< basename >;
+use Carp qw< carp croak confess cluck >;
+use Encode qw< encode decode >;
+use Unicode::Normalize qw< NFD NFC >;
+
+END { close STDOUT }
+
+if (grep /\P{ASCII}/ => @ARGV) {
+    @ARGV = map { decode("UTF-8", $_) } @ARGV;
+}
+
+$0 = basename($0); # shorter messages
+$| = 1;
+
+binmode(DATA, ":encoding(UTF-8)");
+
+# give a full stack dump on any untrapped exceptions
+
+local $SIG{__DIE__} = sub {
+    confess "Uncaught exception: @_" unless $^S;
+};
+
+# now promote run-time warnings into stack-dumped
+# exceptions *unless* we're in an try block, in
+# which case just cluck the stack dump instead
+
+local $SIG{__WARN__} = sub {
+    if ($^S) { cluck "Trapped warning: @_" }
+    else { confess "Deadly warning: @_" }
+};
+
+while (<>) {
+    chomp;
+    $_ = NFD($_);
+    ...
+} continue {
+    say NFC($_);
+}
+
+__END__
+```
+
+## Assume Brokenness
+
+There are a million broken assumptions that people make about Unicode. Until they understand these things, their Perl code will be broken.
+
+What you're going to discover that <mark>it is simply impossible to impose all these things on code that hasn't been designed right from the beginning to account for them</mark>. And even once you do, there are still critical issues that require a great deal of thought to get right. Nothing but brain, and I mean *real brain*, will suffice here. There's a heck of a lot of stuff you have to learn. You cannot wish Unicode away by willful ignorance.
+
+If there's one thing I know about Perl, it is what its Unicode bits do and do not do, and this thing I promise you: "There is no Unicode Magic Bullet".
+
+Unicode is fundamentally more complex than the model that you would like to impose on it, and there is complexity here that you can never sweep under the carpet. At some point, you simply have to break down and **learn what Unicode is about**.
+
+You cannot just change some defaults and get smooth sailing. You shoud go through all the many steps outlined very, **very** carefully.

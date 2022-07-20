@@ -1,6 +1,8 @@
 # Perl - pack y unpack
 
-TAGS: #apunte #development
+TAGS:
+
+- [Development](Development.md)
 
 SOURCES:
 
@@ -49,7 +51,7 @@ Derives some values from the contents of a string of bytes. The string is broken
 - **Integers little-endian byte-order**
     - v -> an unsigned short (16-bit) in "VAX" (little-endian) order.
         - V -> an unsigned long (32-bit) in "VAX" (little-endian) order.
-- **Integer pack codes that result in fixed number of bytes**: <mark>non-portable between processors and operating systems</mark> because they obey native byte-order and [Endianness](./Endianness.md)
+- **Integer pack codes that result in fixed number of bytes**: non-portable between processors and operating systems because they obey native byte-order and [Endianness](Endianness.md)
     - s -> a signed short (16-bit) value.
         - S -> an unsigned short value.
     - l -> a  signed long (32-bit) value.
@@ -120,7 +122,7 @@ Date      |Description                | Income|Expenditure
 ```
 
 ```perl
-my($date, $desc, $income, $expend) = unpack("A10xA27xA7A*", $_);
+my ($date, $desc, $income, $expend) = unpack("A10xA27xA7A*", $_);
 ```
 
 - We can see that the date column stretches from column 1 to column 10 - ten characters wide. -> **A10**
@@ -189,14 +191,13 @@ The result is a string, now containing 2 bytes. If you print this string you mig
 my ( $s ) = unpack( 's', $ps ); # returns the original integer value
 ```
 
-ATTENTION: if the packed value exceeds the allotted byte capacity, high order bits are silently discarded, and unpack certainly won't be able to pull them back. When you pack using a signed template code such as s, an excess value may result in the sign bit getting set, and unpacking this will smartly return a negative value.
+> ATTENTION: if the packed value exceeds the allotted byte capacity, high order bits are silently discarded, and unpack certainly won't be able to pull them back. When you pack using a signed template code such as s, an excess value may result in the sign bit getting set, and unpacking this will smartly return a negative value.
 
 ## Packing integers for "networking"
 
-The pack code for **big-endian** (high order byte at the lowest address) is n for 16 bit and N for 32 bit integers
+The pack code for **big-endian** (high order byte at the lowest address) is `n` for 16 bit and `N` for 32 bit integers
 
-- You use these codes if you know that your data comes from a compliant architecture
-- You should also use these pack codes if you exchange binary data, across the network, with some system that you know next to nothing about. The simple reason is that this order has been chosen as the network order, and all standard-fearing programs ought to follow this convention.
+You should also use these pack codes if you exchange *binary data, across the network*, with some system that you know next to nothing about. The simple reason is that this order has been chosen as the **network order**, and all standard-fearing programs ought to follow this convention.
 
 ```perl
 # send a message by sending the length first, followed by just so many bytes:
@@ -214,12 +215,12 @@ Some protocols demand that the count should include the length of the count itse
 my @data = unpack 's*', pack 'S*', unpack 'n*', $buf;
 ```
 
-unpack an unsigned short (16-bit) in "network" (big-endian) order, then pack it as an unsigned short value to finally unpack it as a signed short (16-bit) value
+unpack an unsigned short (16-bit) in "network" (big-endian) order, then pack it as an unsigned short value to finally unpack it as a signed short (16-bit) value.
 
 As of Perl 5.9.2, there's a much nicer way to express your desire for a certain byte-order:
 
-- \> is the big-endian modifier
-- \< is the little-endian modifier
+- `>` is the big-endian modifier
+- `<` is the little-endian modifier
 
 ```perl
 my @data = unpack 's>*', $buf;
@@ -228,13 +229,7 @@ my @data = unpack 's>*', $buf;
 
 ## Unicode
 
-Unicode is a character set that can represent most characters in most of the world's languages, providing room for over one million different characters. <http://www.unicode.org/>
-
-The Unicode character sets associates characters with integers.
-
-Encoding these numbers in an equal number of bytes would more than double the requirements for storing texts written in Latin alphabets.
-
-The UTF-8 encoding avoids this by storing the most common (from a western point of view) characters in a single byte while encoding the rarer ones in three or more bytes. Perl uses UTF-8, internally, for most Unicode strings.
+The [UTF-8](UTF-8.md) encoding stores the most common (from a western point of view) characters in a single byte while encoding the rarer ones in three or more bytes. Perl uses UTF-8, internally, for most [Unicode](Unicode.md) strings.
 
 ```perl
 # Equivalent to: $UTF8{Euro} = "\x{20ac}"; #Unicode codepoint number
@@ -341,24 +336,19 @@ my %env = unpack( 'S/(S/A* S/A*)', $env );
 
 ```perl
 # Convert IP address for socket functions
-
 pack( "C4", split /\./, "123.4.5.6" );
 
 # Count the number of set bits in a bit vector
-
 unpack( '%32b*', $mask );
 
 # Determine the endianness of your system
-
 $is_little_endian = unpack( 'c', pack( 's', 1 ) );
 $is_big_endian = unpack( 'xc', pack( 's', 1 ) );
 
 # Determine the number of bits in a native integer
-
 $bits = unpack( '%32I!', ~0 );
 
 # Prepare argument for the nanosleep system call
-
 my $timespec = pack( 'L!L!', $secs, $nanosecs );
 ```
 
@@ -399,7 +389,6 @@ my $size = 4096;#tamaño de un bloque
 my $blocks = (length($data)/$n) -1; #cantidad de bloques con 4096 bytes
 
 # el string de contenido lo divide en bloques de datos binarios
-
 my @groups = unpack "a$size" x $blocks . "a*", $data;
 print $_ for ( @groups );
 ```

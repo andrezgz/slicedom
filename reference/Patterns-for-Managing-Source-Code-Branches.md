@@ -1,8 +1,10 @@
 # Patterns for Managing Source Code Branches
 
-TAGS: #articulo #destacado #development
+TAGS: #destacado
 
-SOURCES: [Patterns for Managing Source Code Branches](https://martinfowler.com/articles/branching-patterns.html) - Martin Fowler
+- [Development](Development.md)
+
+SOURCES: [Patterns for Managing Source Code Branches](https://martinfowler.com/articles/branching-patterns.html) - [Martin Fowler](Martin-Fowler.md)
 
 ---
 
@@ -35,7 +37,7 @@ The verb, "to branch" it to create a new branch, which we can also think of as s
 
 After cloning a git repository, two developers check out the master branch. They are both working on "master", but their commits are independent of each other and will need to be merged when they push their changes back to the shared repository.
 
-Yf Scarlett decides she's not sure about the changes that she's made, so she tags the last commit and resets her master branch to origin/master (the last commit she cloned from the shared repository).
+If Scarlett decides she's not sure about the changes that she's made, so she tags the last commit and resets her master branch to origin/master (the last commit she cloned from the shared repository).
 
 ![](../attachments/Dev-Patterns-for-Managing-Source-Code-Branches-002.png)
 
@@ -75,9 +77,9 @@ A single, shared, branch that acts as the current state of the product.
 
 The **mainline** is a special codeline that we consider to be the current state of the team's code. Whenever I wish to start a new piece of work, I'll pull code from mainline into my local repository to begin working on. Whenever I want to share my work with the rest of the team, I'll update that mainline with my work, ideally using the [Mainline Integration](https://martinfowler.com/articles/branching-patterns.html#mainline-integration) pattern.
 
-Different teams use different names for this special branch. git users will often call it “master”, subversion users usually call it “trunk”.
+Different teams use different names for this special branch. git users will often call it "master", subversion users usually call it "trunk".
 
-I must stress here that <mark>mainline is a *single, shared* codeline</mark>. When people talk about “master” in git, they can mean several different things, since every repository clone has it's own local master. Usually such teams will have an origin repository and its master is the mainline.
+I must stress here that <mark>mainline is a *single, shared* codeline</mark>. When people talk about "master" in git, they can mean several different things, since every repository clone has it's own local master. Usually such teams will have an origin repository and its master is the mainline.
 
 Starting a new piece of work from scratch means cloning that origin repository. If I already have a clone, I begin by pulling master to so it's up to date with the mainline.
 
@@ -162,7 +164,7 @@ Occasionally someone else will integrate with mainline before Scarlett can do he
 
 I can only use mainline integration if we're also using mainline on our product.
 
-People may use the word “integrate” to mean merely pulling the mainline into their branch. Pull from mainline to merge those changes into the personal development branch can alert Scarlett to changes other people have integrated, and detect conflicts between her work and mainline. But until Scarlett pushes, Violet won't be able to detect any conflicts between what she's working on and Scarlett's changes.
+People may use the word "integrate" to mean merely pulling the mainline into their branch. Pull from mainline to merge those changes into the personal development branch can alert Scarlett to changes other people have integrated, and detect conflicts between her work and mainline. But until Scarlett pushes, Violet won't be able to detect any conflicts between what she's working on and Scarlett's changes.
 
 Another alternative is when Scarlett is in the middle of doing some work that isn't ready for full integration with the rest of the team, but it overlaps with Violet and she wants to share it with her. In that case they can open a [Collaboration Branch](https://martinfowler.com/articles/branching-patterns.html#collaboration-branch).
 
@@ -310,11 +312,11 @@ The counter-intuitive answer to this is captured by the slogan - ["if it hurts..
 
 Most organizations configure tools like Jenkins, Travis CI, Circle CI, Bamboo) to automatically build feature branches on commit - which, while useful, means they don't actually practice Continuous Integration. (A better name for them would be Continuous Build tools.)
 
-Because of this [Semantic Diffusion](https://martinfowler.com/bliki/SemanticDiffusion.html), some people started to use the term “Trunk-Based Development” instead of “Continuous Integration”. I prefer to use “Continuous Integration” because I think changing terminology rudely erases the contribution of the early Extreme Programming pioneers, in particular Kent Beck, who coined and clearly defined the practice of Continuous Integration in the 1990s.
+Because of this [Semantic Diffusion](https://martinfowler.com/bliki/SemanticDiffusion.html), some people started to use the term "Trunk-Based Development" instead of "Continuous Integration". I prefer to use "Continuous Integration" because I think changing terminology rudely erases the contribution of the early Extreme Programming pioneers, in particular Kent Beck, who coined and clearly defined the practice of Continuous Integration in the 1990s.
 
 ### INTEGRATION PATTERN: Continuous Integration
 
-Developers do mainline integration as soon as they have a healthy commit they can share, usually less than a day's work
+Developers do mainline integration as soon as they have a healthy commit they can share, usually less than a day's work.
 
 Feature branching implies a lower bound to the size of a change-set - you can't be smaller than a cohesive feature.
 
@@ -325,7 +327,7 @@ The rule of thumb is that ["everyone commits to the mainline every day"](https:/
 Developers using Continuous Integration need to get used to the idea of reaching frequent integration points with a partially built feature. <mark>They need to consider how to do this without exposing a partially built feature in the running system.</mark>
 
 - Hiding a partially built feature by hooking up a [Keystone Interface](https://martinfowler.com/bliki/KeystoneInterface.html) last is often an effective technique.
-- If there's no way to easily hide the partial feature, we can use [feature flags](https://martinfowler.com/articles/feature-toggles.html) (or feature toggles). As well as hiding a partially built feature, such flags also allow the feature to be selectively revealed to a subset of users - often handy for a slow roll-out of a new feature.
+- If there's no way to easily hide the partial feature, we can use [Feature flags](Feature-flags.md) (or feature toggles). As well as hiding a partially built feature, such flags also allow the feature to be selectively revealed to a subset of users - often handy for a slow roll-out of a new feature.
 
 Those who use Continuous Integration need [Self Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html), so that there's confidence that having partially built features in mainline doesn't increase the chance of bugs. With this approach, developers write tests for the partially built features as they are writing that feature code and commit both feature code and tests into mainline together (perhaps using [Test Driven Development](https://martinfowler.com/bliki/TestDrivenDevelopment.html)).
 
@@ -387,7 +389,7 @@ In this context, **Feature Branching** makes a whole lot of sense. If someone is
 
 *Every commit to mainline is peer-reviewed before the commit is accepted.*
 
-Code review has long been encouraged as a way of improving code quality, improving modularity, readability, and removing defects. Despite this, commercial organizations often found it difficult to fit into software development workflows. The open-source world, however, widely adopted the idea that contributions to a project should be reviewed before accepting them onto the project's mainline. A workflow like this fits particularly well with the GitHub mechanism of pull-requests.
+[Code Review](Code-Review.md) has long been encouraged as a way of improving code quality, improving modularity, readability, and removing defects. Despite this, commercial organizations often found it difficult to fit into software development workflows. The open-source world, however, widely adopted the idea that contributions to a project should be reviewed before accepting them onto the project's mainline. A workflow like this fits particularly well with the GitHub mechanism of pull-requests.
 
 Scarlett finishes a hunk of work that she wishes to integrate. As she does [Mainline Integration](https://martinfowler.com/articles/branching-patterns.html#mainline-integration) once she has a successful build, but before she pushes to mainline, she sends her commit out for review. Some other member of the team, say Violet, then does a code review on the commit. If she has problems with the commit, she makes some comments and there's some back-and-forth until both Scarlett and Violet are happy. Only once they are done is the commit placed on mainline.
 
@@ -397,7 +399,7 @@ Developing the discipline for timely Reviewed Commits is important. If a develop
 
 <mark>Reviewed Commits always introduces some latency into the integration process, encouraging a lower integration frequency.</mark>
 
-[Pair Programming](https://martinfowler.com/bliki/PairProgramming.html) offers a continuous code review process, with a faster feedback cycle than waiting for a code review. (Like Continuous Integration and Refactoring, it's one of the original practices of [Extreme Programming](https://martinfowler.com/bliki/ExtremeProgramming.html)).
+[Pair Programming](Pair-Programming.md) offers a continuous code review process, with a faster feedback cycle than waiting for a code review. (Like Continuous Integration and Refactoring, it's one of the original practices of [Extreme Programming](https://martinfowler.com/bliki/ExtremeProgramming.html)).
 
 Many teams that use reviewed commits don't do them quickly enough. The valuable feedback that they can offer then comes too late to be useful. At that point there's an awkward choice between a lot of rework, or accepting something that may work, but undermines the quality of the code-base.
 
@@ -487,7 +489,7 @@ As development goes on it gets increasingly difficult to apply fixes to older re
 
 Despite the value of release branches, most of the best teams don't use this pattern for **single-production products**, because they don't need to. If the mainline is kept sufficiently healthy, then any commit to mainline can be released directly. In that case releases should be tagged with a publicly visible version and build number.
 
-You might have noticed I stuck the clumsy adjective “single-production” into the previous paragraph.
+You might have noticed I stuck the clumsy adjective "single-production" into the previous paragraph.
 
 Release branches may also be handy when there is significant friction in the release process. Such friction should be removed from the release process as much as possible in a similar way that we need to remove [integration friction](https://martinfowler.com/articles/branching-patterns.html#integration-friction). However there are some circumstances, such as mobile app stores, when this may not be possible. In many of these cases a tag is sufficient, and branch only opened if there's some essential change required to the source.
 
@@ -643,6 +645,8 @@ Having multiple branches for new development adds complexity. We can achieve thi
 
 If there's a [Release-Ready Mainline](https://martinfowler.com/articles/branching-patterns.html#release-ready-mainline), there's no need for a release branch. With regular releases like this, there's still the option for developers to hold back a nearly-done feature for the next release by not pushing to the mainline if it's just before the regular release date. With [Continuous Integration](https://martinfowler.com/articles/branching-patterns.html#continuous-integration), folks can always delay placing the keystone or keep a feature flag turned off if they want a feature to wait for the next scheduled release.
 
+-> [Feature flags](Feature-flags.md)
+
 ### RELEASE PATTERN: Release-Ready Mainline
 
 *Keep mainline sufficiently healthy that the head of mainline can always be put directly into production.*
@@ -739,9 +743,9 @@ Branching approaches in terms of the patterns.
 
 ### POLICY BRANCHING: Git-flow
 
-Git-flow has become one of the most common branching policies that I've run into. It was [written by Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/) in 2010, appearing as git was getting popular.
+[Git-Flow](Git-Flow.md) has become one of the most common branching policies that I've run into. It was [written by Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/) in 2010, appearing as git was getting popular.
 
-Git-Flow uses [Mainline](https://martinfowler.com/articles/branching-patterns.html#mainline), (calling it “develop”) in a single "origin" repository. It uses [Feature Branching](https://martinfowler.com/articles/branching-patterns.html#feature-branching) to coordinate multiple developers. Developers are encouraged to use their personal repositories as [Collaboration Branch](https://martinfowler.com/articles/branching-patterns.html#collaboration-branch) to coordinate with other developers working in similar work.
+Git-Flow uses [Mainline](https://martinfowler.com/articles/branching-patterns.html#mainline), (calling it "develop") in a single "origin" repository. It uses [Feature Branching](https://martinfowler.com/articles/branching-patterns.html#feature-branching) to coordinate multiple developers. Developers are encouraged to use their personal repositories as [Collaboration Branch](https://martinfowler.com/articles/branching-patterns.html#collaboration-branch) to coordinate with other developers working in similar work.
 
 The traditionally named core branch of git is "master", in git-flow, master is used as a Production [Maturity Branch](https://martinfowler.com/articles/branching-patterns.html#maturity-branch). Git-Flow uses a [Release Branch](https://martinfowler.com/articles/branching-patterns.html#release-branch) so that work passes from "develop" through the release branch to "master". Hotfixes are organized through a [Hotfix Branch](https://martinfowler.com/articles/branching-patterns.html#hotfix-branch).
 
@@ -755,15 +759,13 @@ GitHub Flow - The [best description](http://scottchacon.com/2011/08/31/github-fl
 
 GitHub Flow assumes a single version in production with high-frequency integration onto a [Release-Ready Mainline](https://martinfowler.com/articles/branching-patterns.html#release-ready-mainline). Production issues are fixed in the same way as regular features.
 
-GitHub Flow calls its mainline “master”. Developers work with [Feature Branching](https://martinfowler.com/articles/branching-patterns.html#feature-branching). They push their feature branches regularly to the central repository, to support visibility, but there's no integration with mainline until the feature is complete. Chacon indicates that feature branches can be a single line of code, or run for a couple of weeks. The pull-request mechanism is part of [Mainline Integration](https://martinfowler.com/articles/branching-patterns.html#mainline-integration) and uses [Reviewed Commits](https://martinfowler.com/articles/branching-patterns.html#reviewed-commits).
+GitHub Flow calls its mainline "master". Developers work with [Feature Branching](https://martinfowler.com/articles/branching-patterns.html#feature-branching). They push their feature branches regularly to the central repository, to support visibility, but there's no integration with mainline until the feature is complete. Chacon indicates that feature branches can be a single line of code, or run for a couple of weeks. The pull-request mechanism is part of [Mainline Integration](https://martinfowler.com/articles/branching-patterns.html#mainline-integration) and uses [Reviewed Commits](https://martinfowler.com/articles/branching-patterns.html#reviewed-commits).
 
 ### POLICY BRANCHING: Trunk-Based Development
 
--> [Trunk-Based Development](./Trunk-Based-Development.md)
+-> [Trunk-Based Development](Trunk-Based-Development.md)
 
-As I wrote earlier, I mostly hear “trunk-driven development” as a synonym for continuous integration. Paul Hammant has written an [in-depth website](https://trunkbaseddevelopment.com/) to explain it as a branching policy alternative.
-
-Trunk-Based Development focuses on doing all work on [Mainline](https://martinfowler.com/articles/branching-patterns.html#mainline) (called “trunk”, which is a common synonym for “mainline”), and thus avoiding any kind of long-lived branches. Smaller teams commit directly to mainline using [Mainline Integration](https://martinfowler.com/articles/branching-patterns.html#mainline-integration), larger teams may use short-lived [Feature Branching](https://martinfowler.com/articles/branching-patterns.html#feature-branching) where “short” means no more than a couple of days - which probably equates to [Continuous Integration](https://martinfowler.com/articles/branching-patterns.html#continuous-integration) in practice. Teams may use [Release Branch](https://martinfowler.com/articles/branching-patterns.html#release-branch) (called “branch for release”) or [Release-Ready Mainline](https://martinfowler.com/articles/branching-patterns.html#release-ready-mainline) (“release from trunk”).
+Trunk-Based Development focuses on doing all work on [Mainline](https://martinfowler.com/articles/branching-patterns.html#mainline) (called "trunk", which is a common synonym for "mainline"), and thus avoiding any kind of long-lived branches. Smaller teams commit directly to mainline using [Mainline Integration](https://martinfowler.com/articles/branching-patterns.html#mainline-integration), larger teams may use short-lived [Feature Branching](https://martinfowler.com/articles/branching-patterns.html#feature-branching) where "short" means no more than a couple of days - which probably equates to [Continuous Integration](https://martinfowler.com/articles/branching-patterns.html#continuous-integration) in practice. Teams may use [Release Branch](https://martinfowler.com/articles/branching-patterns.html#release-branch) (called "branch for release") or [Release-Ready Mainline](https://martinfowler.com/articles/branching-patterns.html#release-ready-mainline) ("release from trunk").
 
 ## FINAL THOUGHTS AND RECOMMENDATIONS
 

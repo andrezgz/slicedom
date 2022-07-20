@@ -2,11 +2,14 @@
 
 ALIAS: big-endian, little-endian
 
-TAGS: #apunte #development #concepto
+TAGS: #development #concepto
 
 SOURCES:
 
 - [Lilliput and Blefuscu](https://en.wikipedia.org/wiki/Lilliput_and_Blefuscu)
+- [Big and Little Endian](https://web.archive.org/web/20170227191944/http://www.cs.umd.edu:80/class/sum2003/cmsc311/Notes/Data/endian.html)
+- [Big Endian vs Little Endian](https://www.youtube.com/watch?v=JrNF0KRAlyo)
+- [Big and Little Endian inside / out](https://www.youtube.com/watch?v=oBSuXP-1Tc0)
 
 ---
 
@@ -14,13 +17,13 @@ SOURCES:
 
 - **Little-endian:** Intel and VAX CPUs
 - **Big-endian**: Everybody else, including Motorola m68k/88k, PPC, Sparc, HP PA, Power, and Cray
-    - Also known as the **network** byte order
+    - Also known as the **network byte order** or **network order**
 - Either: Alpha and MIPS. Digital/Compaq used them in little-endian mode, but SGI/Cray uses them in big-endian mode
 
 A 4-byte integer 0x12345678 (305419896 decimal) would be ordered natively (arranged in and handled by the CPU registers) into bytes as
 
-- 0x12 0x34 0x56 0x78 # big-endian
-- 0x78 0x56 0x34 0x12 # little-endian
+- 0x12 0x34 0x56 0x78 for big-endian
+- 0x78 0x56 0x34 0x12 for little-endian
 
 ## Weirder byte orders
 
@@ -33,7 +36,7 @@ Some systems may have even weirder byte orders called mid-endian, middle-endian,
 
 ### pack & unpack
 
--> [Perl - pack y unpack](./Perl-pack-y-unpack.md)
+-> [Perl - pack y unpack](Perl-pack-y-unpack.md)
 
 The integer formats `s`, `S`, `i`, `I`, `l`, `L`, `j`, and `J` are inherently non-portable between processors and operating systems because they obey native byteorder and endianness.
 
