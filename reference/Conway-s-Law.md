@@ -1,10 +1,17 @@
-# Ley de Conway
+# Conway's Law
 
-ALIAS: Conway's Law
+ALIAS: Ley de Conway
 
-TAGS: #concepto
+TAGS: #concepto #law
 
-SOURCES: <https://en.wikipedia.org/wiki/Conway%27s_law>
+- [Design](Design.md)
+
+SOURCES:
+
+- <https://en.wikipedia.org/wiki/Conway%27s_law>
+- [Famous laws of Software development](https://www.timsommer.be/famous-laws-of-software-development/) - Tim Sommer
+- [10 Laws of Software Engineering That People Ignore](https://www.indiehackers.com/post/10-laws-of-software-engineering-that-people-ignore-e3439176dd)
+- [hacker-laws > Conway's Law](https://github.com/dwmkerr/hacker-laws#conways-law)
 
 ---
 
@@ -13,6 +20,10 @@ SOURCES: <https://en.wikipedia.org/wiki/Conway%27s_law>
 Más reducido:
 
 > Any piece of software reflects the organizational structure that produced it.
+
+Más reducido aún:
+
+> You will ship your org chart.
 
 Muchas organizaciones dividen los equipos por función, los cuales tienen una comunicación deficiente y, en algunos casos hasta puede llegar a haber *silos* (completo aislamiento).
 

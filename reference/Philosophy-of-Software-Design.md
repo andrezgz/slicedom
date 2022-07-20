@@ -1,6 +1,8 @@
-# Una Filosofía del Diseño de Software
+# Philosophy of Software Design
 
-TAGS: #design #development #apunte
+TAGS:
+
+- [Design](Design.md)
 
 SOURCES:
 
@@ -30,7 +32,7 @@ Red flags are very specific things that, if you see this sort of behavior or pat
 
 Reformulation of classic Parnas paper: "On the Criteria to be Used in Decomposing Systems into Modules"
 
--> [Criterios para descomponer Sistemas en Módulos](./Criterios-para-descomponer-Sistemas-en-Modulos.md)
+-> [Criterios para descomponer Sistemas en Módulos](Criterios-para-descomponer-Sistemas-en-Modulos.md)
 
 ![](../attachments/Class-structure-Interface-Funcionality.png)
 
@@ -73,7 +75,7 @@ Exceptions are a huge source of complexity in systems. You're taught to program 
 - In Java, there're various methods that will extract a substring out of a string. If either of indices is outside the range of the substring they throw an exception. I end up, typically, having to write my own code to effectively clip my indices to the range of the string before I invoke the Java substring command, so I won't get these exceptions.
     - Instead, it'd be so much simpler just to return the overlap between the indices you've specified and the available contents of the string. So if both of the indices are outside the range of the string, it returns an empty string.
 
-## Strategic vs. tactical programming 
+## Strategic vs. tactical programming
 
 We try to avoid people from making mistakes, which it's kind of a noble thought. But the problem is that it's really hard to do. And so typically what happens is we introduce lots of complexity, which makes it hard to even do the right thing.
 
