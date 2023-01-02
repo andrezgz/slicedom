@@ -1,1 +1,14 @@
-/debug.html
+.trash/
+.obsidian/plugins/omnisearch/notesCache.json
+.obsidian/plugins/omnisearch/searchIndex.json
+.obsidian/plugins/omnisearch/historyCache.json
+.obsidian/workspace.json
+.obsidian/workspaces.json
+.obsidian/workspace-mobile.json
+.obsidianios/plugins/omnisearch/notesCache.json
+.obsidianios/plugins/omnisearch/searchIndex.json
+.obsidianios/plugins/omnisearch/historyCache.json
+.obsidianios/workspace.json
+.obsidianios/workspaces.json
+.obsidianios/workspace-mobile.json
+debug.html
