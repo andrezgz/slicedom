@@ -1,4 +1,4 @@
-> En construcción eterna
+> Under eternal construction
 
 ## General
 
