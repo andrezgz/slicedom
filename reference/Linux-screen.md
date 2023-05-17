@@ -1,9 +1,5 @@
 # Linux - screen
 
-TAGS:
-
-- [Linux](Linux.md)
-
 SOURCES:
 
 - [How To Use Linux ScreenLinuxize](https://linuxize.com/post/how-to-use-linux-screen/)

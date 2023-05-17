@@ -1,8 +1,4 @@
-# Perl - pack y unpack
-
-TAGS:
-
-- [Development](Development.md)
+# Perl - pack & unpack
 
 SOURCES:
 
@@ -31,46 +27,46 @@ Converts values to a byte sequence containing representations according to a giv
 Derives some values from the contents of a string of bytes. The string is broken into chunks described by the TEMPLATE. Each chunk is converted separately to a value.
 
 - Takes a string and expands it out into a list of values. (In scalar context, it returns merely the first value produced.)
-- If EXPR is omitted, unpacks the $_ string.
+- If EXPR is omitted, unpacks the `$_` string.
 - Not all that has been packed together can be neatly unpacked!
 - turn a fixed-width-format string into several pieces of data.
 
 ## TEMPLATE
 
 - **Strings**
-    - a -> a string with arbitrary binary data, will be null padded.
-        - A -> a text (ASCII) string, will be space padded
+    - `a` -> a string with arbitrary binary data, will be null padded.
+        - `A` -> a text (ASCII) string, will be space padded
         - A means "any character"
-    - Z -> a null-terminated (ASCIZ) string, will be null padded.
-    - c -> a signed char (8-bit) value.
-        - C -> an unsigned char (octet) value.
-    - U -> a Unicode character number. Encodes to a character in character mode and UTF-8 (or UTF-EBCDIC in EBCDIC platforms) in byte mode
+    - `Z` -> a null-terminated (ASCIZ) string, will be null padded.
+    - `c` -> a signed char (8-bit) value.
+        - `C` -> an unsigned char (octet) value.
+    - `U` -> a Unicode character number. Encodes to a character in character mode and UTF-8 (or UTF-EBCDIC in EBCDIC platforms) in byte mode
 - **Integers big-endian byte-order**: <mark>use these pack codes if you exchange binary data, across the network, with some system that you know next to nothing about</mark>. This order has been chosen as the **network order**.
-    - n -> an unsigned short (16-bit) in "network" (big-endian) order.
-        - N -> an unsigned long (32-bit) in "network" (big-endian) order.
+    - `n` -> an unsigned short (16-bit) in "network" (big-endian) order.
+        - `N` -> an unsigned long (32-bit) in "network" (big-endian) order.
 - **Integers little-endian byte-order**
-    - v -> an unsigned short (16-bit) in "VAX" (little-endian) order.
-        - V -> an unsigned long (32-bit) in "VAX" (little-endian) order.
+    - `v` -> an unsigned short (16-bit) in "VAX" (little-endian) order.
+        - `V` -> an unsigned long (32-bit) in "VAX" (little-endian) order.
 - **Integer pack codes that result in fixed number of bytes**: non-portable between processors and operating systems because they obey native byte-order and [Endianness](Endianness.md)
-    - s -> a signed short (16-bit) value.
-        - S -> an unsigned short value.
-    - l -> a  signed long (32-bit) value.
-        - L -> an unsigned long value.
-    - q -> a signed quad (64-bit) value.
-        - Q -> an unsigned quad value.
+    - `s` -> a signed short (16-bit) value.
+        - `S` -> an unsigned short value.
+    - `l` -> a  signed long (32-bit) value.
+        - `L` -> an unsigned long value.
+    - `q` -> a signed quad (64-bit) value.
+        - `Q` -> an unsigned quad value.
         - (Quads are available only if your system supports 64-bit integer values *and* if Perl has been compiled to support those. Raises an exception otherwise.)
 - **Integer pack codes that depends on the local C compiler**: portable way to pass data structures between Perl and C programs (bound to happen when you call XS extensions or the Perl function syscall), or when you read or write binary files
-    - i -> a signed integer value.
-        - I -> an unsigned integer value.
+    - `i` -> a signed integer value.
+        - `I` -> an unsigned integer value.
         - (This 'integer' is *at least* 32 bits wide. Its exact size depends on what a local C compiler calls 'int'.)
 - **Hexadecimal**: A nibble or nybble is a four-bit aggregation, or half an octet
-    - h -> a hex string (low nybble first)
-        - H -> a hex string (high nybble first) The first character of the pair determines the most-significant nybble
+    - `h` -> a hex string (low nybble first)
+        - `H` -> a hex string (high nybble first) The first character of the pair determines the most-significant nybble
 - **Floating point numbers**
-    - f -> a single-precision float in native format.
-        - F -> a Perl internal floating-point value (NV) in native format
-    - d -> a double-precision float in native format.
-        - D -> a float of long-double precision in native format.
+    - `f` -> a single-precision float in native format.
+        - `F` -> a Perl internal floating-point value (NV) in native format
+    - `d` -> a double-precision float in native format.
+        - `D` -> a float of long-double precision in native format.
         - (Long doubles are available only if your system supports long double values *and* if Perl has been compiled to support those. Raises an exception otherwise. There are different long double formats.)
 - `x` -> a null byte, ASCII NUL, `\000` or `chr(0)`
     - `x` means "skip a byte forward" when unpacking; when packing, it means "introduce a null byte"
@@ -352,7 +348,7 @@ $bits = unpack( '%32I!', ~0 );
 my $timespec = pack( 'L!L!', $secs, $nanosecs );
 ```
 
-## Hexadecimal to/from bytes
+### Hexadecimal to/from bytes
 
 ```perl
 # H: A hex string (high nybble first).
@@ -364,7 +360,7 @@ print unpack('H*', $buf); # prints 12345678
 print unpack('h*', $buf); # prints 21436587
 ```
 
-## Hexadecimal pack/unpack + RC4
+### Hexadecimal pack/unpack + RC4
 
 ```perl
 # cifrado RC4 del texto plano con una palabra clave
@@ -382,7 +378,7 @@ my $decrypted = RC4($passphrase, $encrypted_from_hex);
 
 [crypt-rc4.pl](../attachments/crypt-rc4.pl)
 
-## Divide content in binary data blocks of the same size
+### Divide content in binary data blocks of the same size
 
 ```perl
 my $size = 4096;#tamaño de un bloque
@@ -398,7 +394,7 @@ print $_ for ( @groups );
 - [sample-serve-ics.cgi](../attachments/sample-serve-ics.cgi)
 - [sample-serve-ics-delay.cgi](../attachments/sample-serve-ics-delay.cgi) to appreciate how data blocks are returned
 
-## IPv4 to/from decimal
+### IPv4 to/from decimal
 
 > Dirección IP v4 (4 octetos separados por .) <-> decimal
 
@@ -414,7 +410,7 @@ unpack N => pack CCCC => split /\./ => shift; #ip2dec
 join '.', unpack CCCC, pack N, shift; #dec2ip
 ```
 
-### ip2dec separado en partes documentadas
+#### ip2dec separado en partes documentadas
 
 ```perl
 my $ip = shift;
@@ -427,7 +423,7 @@ my $bytes = pack 'CCCC', @octets; # C  An unsigned char (octet) value.
 my ( $dec ) = unpack 'N', $bytes; # N  An unsigned long (32-bit) in "network" (big-endian) order.
 ```
 
-### ip2dec - variantes de one-liner
+#### ip2dec - variantes de one-liner
 
 ```perl
 # indicar la cantidad de caracteres en el template
@@ -447,7 +443,7 @@ unpack('N' , pack ('C4' , split(/\./ , shift)));
 unpack('N' , pack ('C*' , split(/\./ , shift)));
 ```
 
-### Prueba en línea de comandos
+### ip2dec - línea de comandos
 
 ```perl
 perl -e "print unpack N => pack CCCC => split /\./ => shift;" 192.168.0.1 #prints 3232235521

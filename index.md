@@ -13,7 +13,7 @@
 ## Perl
 
 - [Perl - Unicode](reference/Perl-Unicode.md)
-- [Perl - pack y unpack](reference/Perl-pack-y-unpack.md)
+- [Perl - pack & unpack](reference/Perl-pack-unpack.md)
 
 ## Linux
 

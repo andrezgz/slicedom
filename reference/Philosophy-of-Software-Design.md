@@ -1,9 +1,5 @@
 # Philosophy of Software Design
 
-TAGS:
-
-- [Design](Design.md)
-
 SOURCES:
 
 - [A Philosophy of Software Design - Talks at Google](https://www.youtube.com/watch?v=bmSAYlu0NcY) - John Ousterhout
@@ -30,9 +26,7 @@ Red flags are very specific things that, if you see this sort of behavior or pat
 
 ## Classes Should be Deep
 
-Reformulation of classic Parnas paper: "On the Criteria to be Used in Decomposing Systems into Modules"
-
--> [Criterios para descomponer Sistemas en Módulos](Criterios-para-descomponer-Sistemas-en-Modulos.md)
+Reformulation of classic Parnas paper: [On the Criteria To Be Used in Decomposing Systems into Modules](On-the-Criteria-To-Be-Used-in-Decomposing-Systems-into-Modules.md)
 
 ![](../attachments/Class-structure-Interface-Funcionality.png)
 

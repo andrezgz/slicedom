@@ -1,9 +1,5 @@
 # Patterns for Managing Source Code Branches
 
-TAGS: #destacado
-
-- [Development](Development.md)
-
 SOURCES: [Patterns for Managing Source Code Branches](https://martinfowler.com/articles/branching-patterns.html) - [Martin Fowler](Martin-Fowler.md)
 
 ---

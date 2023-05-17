@@ -1,10 +1,5 @@
 # Perl - Unicode
 
-TAGS:
-
-- [Perl](Perl.md)
-- [Unicode](Unicode.md)
-
 SOURCES:
 
 - [perlunicode - Unicode support in Perl](https://perldoc.perl.org/perlunicode)
@@ -117,7 +112,7 @@ The Perl DATA handle should be UTF-8. You will have to do this on a per-package 
 
 Program arguments to Perl scripts should be understood to be UTF-8 by default. `export PERL_UNICODE=A`, or `perl -CA`, or `export PERL5OPTS=-CA`.
 
-The standard input, output, and error streams should default to UTF-8. export `PERL_UNICODE=S` for all of them, or I, O, and/or E for just some of them. This is like `perl -CS`.
+The standard input, output, and error streams should default to UTF-8. `export PERL_UNICODE=S` for all of them, or I, O, and/or E for just some of them. This is like `perl -CS`.
 
 Any other handles opened by Perl should be considered UTF-8 unless declared otherwise; `export PERL_UNICODE=D` or with `i` and `o` for particular ones of these; `export PERL5OPTS=-CD` would work. That makes `-CSAD` for all of them.
 
@@ -960,7 +955,7 @@ In other languages, see documentation to see which definition of `\w` applies.
 
 ### Code that assumes Perl uses UTF‑8 internally is wrong. Code that assumes Perl code points are limited to 0x10_FFFF is wrong
 
--> [Perl - utf8 & UTF-8](Perl-utf8-UTF-8.md)
+-> [Perl - UTF-8 vs utf8](Perl-UTF-8-vs-utf8.md)
 
 - Perl uses a [very permissive variant](http://perldoc.perl.org/Encode.html#UTF-8-vs.-utf8-vs.-UTF8) of UTF-8 it calls 'utf8' which allows very high codepoints (beyond 0x10_FFFF) and illegal characters or sequences.
 - Perl may use ISO-8859-1 if the string's UTF8 flag is unset.

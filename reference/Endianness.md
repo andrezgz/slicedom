@@ -2,8 +2,6 @@
 
 ALIAS: big-endian, little-endian
 
-TAGS: #development #concepto
-
 SOURCES:
 
 - [Lilliput and Blefuscu](https://en.wikipedia.org/wiki/Lilliput_and_Blefuscu)
@@ -36,7 +34,7 @@ Some systems may have even weirder byte orders called mid-endian, middle-endian,
 
 ### pack & unpack
 
--> [Perl - pack y unpack](Perl-pack-y-unpack.md)
+-> [Perl - pack & unpack](Perl-pack-unpack.md)
 
 The integer formats `s`, `S`, `i`, `I`, `l`, `L`, `j`, and `J` are inherently non-portable between processors and operating systems because they obey native byteorder and endianness.
 
