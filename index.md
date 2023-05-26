@@ -3,6 +3,7 @@
 ## General
 
 - [Conway's Law](reference/Conway-s-Law.md)
+- [Survivorship Bias](reference/Survivorship-Bias.md)
 - [Patterns for Managing Source Code Branches](reference/Patterns-for-Managing-Source-Code-Branches.md)
 - [Philosophy of Software Design](reference/Philosophy-of-Software-Design.md)
 
