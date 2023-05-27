@@ -9,6 +9,7 @@ SOURCES:
 - [10 Laws of Software Engineering That People Ignore](https://www.indiehackers.com/post/10-laws-of-software-engineering-that-people-ignore-e3439176dd)
 - [hacker-laws > Conway's Law](https://github.com/dwmkerr/hacker-laws#conways-law)
 - [Conway's Law](https://martinfowler.com/bliki/ConwaysLaw.html)
+- [Conway's Law, DDD, and Microservices](https://ardalis.com/conways-law-ddd-and-microservices/)
 
 ---
 

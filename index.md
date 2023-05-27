@@ -15,6 +15,9 @@
 
 - [Perl - Unicode](reference/Perl-Unicode.md)
 - [Perl - pack & unpack](reference/Perl-pack-unpack.md)
+- Sorting Techniques
+    - [Schwartzian Transform](reference/Schwartzian-Transform.md)
+    - [Orcish Maneuver](reference/Orcish-Maneuver.md)
 
 ## Linux
 
