@@ -143,7 +143,7 @@ In *Perl 6*, one needs to supply a comparator lambda that only takes 1 argument 
 
 ## Unix shell
 
-It's a little funny that I can be talking about this at all, because it's so common in Unix shell programming that it doesn't even have a name:
+This is so common in Unix shell programming that it doesn't even have a name:
 
 ```shell
 # Sort file names by file size
