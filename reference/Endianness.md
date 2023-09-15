@@ -4,6 +4,7 @@ ALIAS: big-endian, little-endian
 
 SOURCES:
 
+- <https://en.wikipedia.org/wiki/Endianness>
 - [Lilliput and Blefuscu](https://en.wikipedia.org/wiki/Lilliput_and_Blefuscu)
 - [Big and Little Endian](https://web.archive.org/web/20170227191944/http://www.cs.umd.edu:80/class/sum2003/cmsc311/Notes/Data/endian.html)
 - [Big Endian vs Little Endian](https://www.youtube.com/watch?v=JrNF0KRAlyo)
@@ -11,21 +12,22 @@ SOURCES:
 
 ---
 
+**Endianness** is the byte order of a word of digital data in computer memory or data communication which is identified by describing the impact of the "first" bytes, meaning at the smallest address or sent first.
+
 ## Byte orders
 
-- **Little-endian:** Intel and VAX CPUs
-- **Big-endian**: Everybody else, including Motorola m68k/88k, PPC, Sparc, HP PA, Power, and Cray
+Endianness is primarily expressed as:
+
+- **big-endian** (BE): the most significant byte of a word are stored at the smallest memory address and the least significant byte at the largest
     - Also known as the **network byte order** or **network order**
-- Either: Alpha and MIPS. Digital/Compaq used them in little-endian mode, but SGI/Cray uses them in big-endian mode
+- **little-endian** (LE): the least-significant byte are stored at the smallest address
 
 A 4-byte integer 0x12345678 (305419896 decimal) would be ordered natively (arranged in and handled by the CPU registers) into bytes as
 
 - 0x12 0x34 0x56 0x78 for big-endian
 - 0x78 0x56 0x34 0x12 for little-endian
 
-## Weirder byte orders
-
-Some systems may have even weirder byte orders called mid-endian, middle-endian, mixed-endian, or just *weird*.
+Some systems may have even *weirder byte orders* called mid-endian, middle-endian, mixed-endian, or just *weird*.
 
 - 0x56 0x78 0x12 0x34
 - 0x34 0x12 0x78 0x56
