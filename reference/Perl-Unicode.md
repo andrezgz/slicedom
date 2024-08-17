@@ -1,20 +1,5 @@
 # Perl - Unicode
 
-SOURCES:
-
-- [perlunicode - Unicode support in Perl](https://perldoc.perl.org/perlunicode)
-- [perluniprops - Index of Unicode Version 13.0.0 character properties in Perl](https://perldoc.perl.org/perluniprops)
-- [perlrecharclass - Perl Regular Expression Character Classes](https://perldoc.perl.org/perlrecharclass)
-- [perlre - Perl regular expressions](https://perldoc.perl.org/perlre)
-- [perlrebackslash - Perl Regular Expression Backslash Sequences and Escapes](https://perldoc.perl.org/perlrebackslash)
-- [Unicode In Five Minutes](https://richardjharris.github.io/unicode-in-five-minutes.html) - Richard Harris
-- [All sorts of things you can get wrong in Unicode, and why](https://richardjharris.github.io/all-sorts-of-things-you-can-get-wrong-in-unicode-and-why.html) - Richard Harris
-- [Why does modern Perl avoid UTF-8 by default?](https://stackoverflow.com/questions/6162484/why-does-modern-perl-avoid-utf-8-by-default)
-- [𝙎𝙞𝙢𝙥𝙡𝙚𝙨𝙩 ℞: 𝟕 𝘿𝙞𝙨𝙘𝙧𝙚𝙩𝙚 𝙍𝙚𝙘𝙤𝙢𝙢𝙚𝙣𝙙𝙖𝙩𝙞𝙤𝙣𝙨](https://stackoverflow.com/questions/6162484/why-does-modern-perl-avoid-utf-8-by-default/6163129#6163129) - Tom Christiansen (tchrist)
-- [JSON, Unicode, and Perl ... Oh My!](https://perl.com/article/json-unicode-and-perl-oh-my-/)
-
----
-
 ## Normalization
 
 It doesn't matter what form you use as long as you are consistent.
@@ -45,13 +30,13 @@ sort { fc($a) cmp fc($b) } @stuff;
 
 ## Comparing & Sorting
 
-You should use the [Unicode::Collate](https://metacpan.org/pod/Unicode::Collate) module.
+You should use the [Unicode::Collate](https://perldoc.perl.org/Unicode::Collate) module.
 
 String comparisons in Perl using `eq`, `ne`, `lc`, `cmp`, `sort`, `&c&cc` are always wrong. So instead of `@a = sort @b`, you need `@a = Unicode::Collate->new->sort(@b)`. Might as well add that to your `export PERL5OPTS=-MUnicode::Collate`. You can cache the key for binary comparisons.
 
-Case-insensitive comparisons need to check for whether two things are the same letters no matter their diacritics and such. The easiest way to do that is whit `Unicode::Collate->new(level => 1)->cmp($a, $b)`. There are also `eq` methods and such, and you should probably learn about the match and substr methods, too. These are have distinct advantages over the Perl built-ins.
+Case-insensitive comparisons need to check for whether two things are the same letters no matter their diacritics and such. The easiest way to do that is whit `Unicode::Collate->new(level => 1)->cmp($a, $b)`. There are also `eq` methods and such, and you should probably learn about the `match` and `substr` methods, too. These have distinct advantages over the Perl built-ins.
 
-Sometimes that's still not enough, and you need [the Unicode::Collate::Locale](https://metacpan.org/pod/Unicode::Collate::Locale) module instead, as in `Unicode::Collate::Locale->new(locale => "de__phonebook", level => 1)->cmp($a, $b)` instead. Consider that `Unicode::Collate::->new(level => 1)->eq("d", "ð")` is true, but `Unicode::Collate::Locale->new(locale=>"is",level => 1)->eq("d", " ð")` is false. Similarly, `ae` and `æ` are `eq` if you don't use locales, or if you use the English one, but they are different in the Icelandic locale.
+Sometimes that's still not enough, and you need the [Unicode::Collate::Locale](https://perldoc.perl.org/Unicode::Collate::Locale) module instead, as in `Unicode::Collate::Locale->new(locale => "de__phonebook", level => 1)->cmp($a, $b)` instead. Consider that `Unicode::Collate->new(level => 1)->eq("d", "ð")` is true, but `Unicode::Collate::Locale->new(locale=>"is",level => 1)->eq("d", " ð")` is false. Similarly, `ae` and `æ` are `eq` if you don't use locales, or if you use the English one, but they are different in the Icelandic locale.
 
 ```perl
 #!/usr/bin/perl
@@ -60,6 +45,8 @@ my $collator = Unicode::Collate::Locale->new(locale => 'DE');
 my @sorted = $collator->sort(@array);
 $collator->cmp($word, $another_word); # -> -1, 0 or 1
 ```
+
+-> [Perl alphabetic sort done right](Perl-alphabetic-sort-done-right.md)
 
 ## Unicode and internationalised domain names
 
@@ -161,7 +148,7 @@ my $nfd = NFD($string);
 $nfd =~ / (?=[aeiou]) \X /xi;
 ```
 
-Now consider how to match the pattern CVCV (consonsant, vowel, consonant, vowel) in the string `niño`. Its NFD form — which you had darned well better have remembered to put it in — becomes `nin\x{303}o`. Now what are you going to do? Even pretending that a vowel is `[aeiou]` (which is wrong, by the way), you won't be able to do something like `(?=[aeiou])\X)` either, because even in NFD a code point like `ø` **does not decompose**! However, it will test equal to an `o` using the UCA comparison I just showed you. You can't rely on NFD, you have to rely on UCA.
+Now consider how to match the pattern CVCV (consonant, vowel, consonant, vowel) in the string `niño`. Its NFD form — which you had darned well better have remembered to put it in — becomes `nin\x{303}o`. Now what are you going to do? Even pretending that a vowel is `[aeiou]` (which is wrong, by the way), you won't be able to do something like `(?=[aeiou])\X)` either, because even in NFD a code point like `ø` **does not decompose**! However, it will test equal to an `o` using the UCA comparison I just showed you. You can't rely on NFD, you have to rely on UCA.
 
 ### Hexadecimal escapes
 
@@ -747,33 +734,37 @@ Prior to 5.14, there were no explicit modifiers, but `/l` was implied for regexe
 
 <https://perldoc.perl.org/perlunicode#The-%22Unicode-Bug%22>
 
-The term, "Unicode bug" has been applied to an inconsistency with the code points in the `Latin-1 Supplement` block, that is, between 128 and 255. Without a locale specified, unlike all other characters or code points, these characters can have very different semantics depending on the rules in effect.
+Before Unicode, when a character was a byte was a character, Perl knew only about the 128 characters defined by ASCII, code points 0 through 127 (except for under `use locale`). That left the code points 128 to 255 as unassigned. The only semantics they have is their ordinal numbers, and that they are members of none of the non-negative character classes. None are considered to match `\w` for example, but all match `\W`.
 
-(Characters whose code points are above 255 force Unicode rules; whereas the rules for ASCII characters are the same under both ASCII and Unicode rules.)
+The term, "Unicode bug" has been applied to an *inconsistency* with the code points in the `Latin-1 Supplement` block, that is, between 128 and 255. Without a locale specified, unlike all other characters or code points, these characters can have very different semantics depending on the rules in effect.
 
-Under Unicode rules, these upper-Latin1 characters are interpreted as Unicode code points, which means they have the same semantics as Latin-1 (ISO-8859-1) and C1 controls.
+> Characters whose code points are above 255 force Unicode rules; whereas the rules for ASCII characters are the same under both ASCII and Unicode rules.
 
-As explained in ["ASCII Rules versus Unicode Rules"](https://perldoc.perl.org/perlunicode#ASCII-Rules-versus-Unicode-Rules), under ASCII rules, they are considered to be unassigned characters.
+- <mark>Under Unicode rules, these upper-Latin1 characters are interpreted as Unicode code points, which means they have the same semantics as Latin-1 (ISO-8859-1) and C1 controls</mark>.
+- Under ASCII rules, they are considered to be unassigned characters, as explained in ["ASCII Rules versus Unicode Rules"](https://perldoc.perl.org/perlunicode#ASCII-Rules-versus-Unicode-Rules).
 
-<mark>This can lead to unexpected results</mark>. For example, a string's semantics can suddenly change if a code point above 255 is appended to it, which changes the rules from ASCII to Unicode. As an example, consider the following program and its output:
+<mark>This can lead to unexpected results</mark>. For example, a string's semantics can suddenly change if a code point above 255 is appended to it, which changes the rules from ASCII to Unicode:
 
-```shell
-$ perl -le'
-    no feature "unicode_strings";
-    $s1 = "\xC2";
-    $s2 = "\x{2660}";
-    for ($s1, $s2, $s1.$s2) {
-        print /\w/ || 0;
-    }
-'
-0
-0
-1
+```perl
+no feature "unicode_strings"; # also, the default behavior
+
+# Â is a word character
+$s1 = "\xC2";
+print $s1 =~ /\w/ || 0; # 0 
+# BUT under ASCII rules it is NOT a "word" character
+
+# ♠ is not a word character
+$s2 = "\x{2660}"; # code point above 255 implies Unicode for the whole string
+print $s2 =~ /\w/ || 0; # 0
+# and under Unicode rules it is not a "word" character
+
+# The concatenation of both Â♠ implies Unicode for the whole string
+$s = $s1.$s2;
+print $s =~ /\w/ || 0; # 1
+# Â is NOW considered a word character because it is matched under Unicode rules
 ```
 
-If there's no `\w` in `s1` nor in `s2`, why does their concatenation have one?
-
-This anomaly stems from Perl's attempt to not disturb older programs that didn't use Unicode, along with Perl's desire to add Unicode support seamlessly. But the result turned out to not be seamless. (By the way, you can choose to be warned when things like this happen. See `encoding::warnings`.)
+This anomaly stems from Perl's attempt to not disturb older programs that didn't use Unicode, along with Perl's desire to add Unicode support seamlessly. But the result turned out to not be seamless.
 
 `use feature 'unicode_strings'` was added, starting in Perl v5.12, to address this problem. Check [What is it people have against unicode_strings?](https://youtu.be/FlGpiS39NMY?t=3024)
 
@@ -1105,3 +1096,17 @@ If there's one thing I know about Perl, it is what its Unicode bits do and do no
 Unicode is fundamentally more complex than the model that you would like to impose on it, and there is complexity here that you can never sweep under the carpet. At some point, you simply have to break down and **learn what Unicode is about**.
 
 You cannot just change some defaults and get smooth sailing. You shoud go through all the many steps outlined very, **very** carefully.
+
+## Linked Sources
+
+- [perlunicode - Unicode support in Perl](https://perldoc.perl.org/perlunicode)
+- [perluniprops - Index of Unicode Version 13.0.0 character properties in Perl](https://perldoc.perl.org/perluniprops)
+- [perlrecharclass - Perl Regular Expression Character Classes](https://perldoc.perl.org/perlrecharclass)
+- [perlre - Perl regular expressions](https://perldoc.perl.org/perlre)
+- [perlrebackslash - Perl Regular Expression Backslash Sequences and Escapes](https://perldoc.perl.org/perlrebackslash)
+- [Unicode In Five Minutes](https://richardjharris.github.io/unicode-in-five-minutes.html) - Richard Harris
+- [All sorts of things you can get wrong in Unicode, and why](https://richardjharris.github.io/all-sorts-of-things-you-can-get-wrong-in-unicode-and-why.html) - Richard Harris
+- [Why does modern Perl avoid UTF-8 by default?](https://stackoverflow.com/questions/6162484/why-does-modern-perl-avoid-utf-8-by-default)
+- [𝙎𝙞𝙢𝙥𝙡𝙚𝙨𝙩 ℞: 𝟕 𝘿𝙞𝙨𝙘𝙧𝙚𝙩𝙚 𝙍𝙚𝙘𝙤𝙢𝙢𝙚𝙣𝙙𝙖𝙩𝙞𝙤𝙣𝙨](https://stackoverflow.com/questions/6162484/why-does-modern-perl-avoid-utf-8-by-default/6163129#6163129) - Tom Christiansen (tchrist)
+- [JSON, Unicode, and Perl ... Oh My!](https://perl.com/article/json-unicode-and-perl-oh-my-/)
+- [How does perl treat unicode symbols with length?](https://www.reddit.com/r/perl/comments/pcmrt2/how_does_perl_treat_unicode_symbols_with_length/)

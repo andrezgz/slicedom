@@ -1,9 +1,5 @@
 # Patterns for Managing Source Code Branches
 
-SOURCES: [Patterns for Managing Source Code Branches](https://martinfowler.com/articles/branching-patterns.html) - [Martin Fowler](Martin-Fowler.md)
-
----
-
 ## BASE PATTERNS
 
 Two main categories:
@@ -261,7 +257,7 @@ Developers using Continuous Integration need to get used to the idea of reaching
 - Hiding a partially built feature by hooking up a [Keystone Interface](https://martinfowler.com/bliki/KeystoneInterface.html) last is often an effective technique.
 - If there's no way to easily hide the partial feature, we can use [Feature flags](Feature-flags.md) (or feature toggles). As well as hiding a partially built feature, such flags also allow the feature to be selectively revealed to a subset of users - often handy for a slow roll-out of a new feature.
 
-Those who use Continuous Integration need [Self Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html), so that there's confidence that having partially built features in mainline doesn't increase the chance of bugs. With this approach, developers write tests for the partially built features as they are writing that feature code and commit both feature code and tests into mainline together (perhaps using [Test Driven Development](https://martinfowler.com/bliki/TestDrivenDevelopment.html)).
+Those who use Continuous Integration need [Self Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html), so that there's confidence that having partially built features in mainline doesn't increase the chance of bugs. With this approach, developers write tests for the partially built features as they are writing that feature code and commit both feature code and tests into mainline together (perhaps using [Test-Driven Development](Test-Driven-Development.md)).
 
 In terms of a local repo, <mark>most people who use Continuous Integration don't bother with a separate local branch to work on</mark>. It's usually straightforward to commit to the local master and perform mainline integration when done. However it's perfectly fine to open a feature branch and do the work there, if developers prefer it, integrating back into the local master and mainline at frequent intervals. <mark>The difference between feature branching and continuous integration isn't whether or not there's a feature branch, but when developers integrate with mainline.</mark>
 
@@ -708,3 +704,7 @@ Branching is easy, merging is harder. Branching is a powerful technique, but it 
 - **Aim to double your integration frequency**. Branches diverge exponentially as they run without integrating. So consider how often you integrate your branches.
     - There will be barriers to integrating more often, but those barriers are often exactly the ones that need to be given an excessive dose of dynamite in order to improve your development process.
 - **Pay attention to what's making merging difficult**. Any merge problem, especially one that causes a crisis, is a signpost to improving a team's effectiveness.
+
+## Linked Sources
+
+- [Patterns for Managing Source Code Branches](https://martinfowler.com/articles/branching-patterns.html) - [Martin Fowler](Martin-Fowler.md)

@@ -15,8 +15,9 @@
 
 - [Perl - Unicode](reference/Perl-Unicode.md)
 - [Perl - pack & unpack](reference/Perl-pack-unpack.md)
+- [Perl - select](reference/Perl-select.md)
 - [Perl - Unbuffered Output or Hot Filehandle](reference/Perl-Unbuffered-Output-or-Hot-Filehandle.md)
-- Sorting Techniques
+- Perl - sort
     - [Schwartzian Transform](reference/Schwartzian-Transform.md)
     - [Orcish Maneuver](reference/Orcish-Maneuver.md)
 

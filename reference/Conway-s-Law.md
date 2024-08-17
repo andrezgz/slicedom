@@ -2,17 +2,6 @@
 
 ALIAS: Ley de Conway
 
-SOURCES:
-
-- <https://en.wikipedia.org/wiki/Conway%27s_law>
-- [Famous laws of Software development](https://www.timsommer.be/famous-laws-of-software-development/) - Tim Sommer
-- [10 Laws of Software Engineering That People Ignore](https://www.indiehackers.com/post/10-laws-of-software-engineering-that-people-ignore-e3439176dd)
-- [hacker-laws > Conway's Law](https://github.com/dwmkerr/hacker-laws#conways-law)
-- [Conway's Law](https://martinfowler.com/bliki/ConwaysLaw.html)
-- [Conway's Law, DDD, and Microservices](https://ardalis.com/conways-law-ddd-and-microservices/)
-
----
-
 > Organizations which design systems are constrained to produce designs which are copies of the communication structures of these organizations.
 
 Simplified version:
@@ -79,4 +68,13 @@ Coined by Melvin Conway, who introduced the idea in 1967. His original words wer
 >
 > -- Melvin E. Conway
 
-The source for Conway's law is [an article](https://www.melconway.com/Home/Committees_Paper.html) written by Melvin Conway in 1968. It was published by Datamation, one of the most important journals for the software industry at that time. It was later dubbed “Conway’s Law” by Fred Brooks in his hugely influential book [The Mythical Man-Month](https://www.amazon.com/gp/product/0201835959/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201835959&linkCode=as2&tag=martinfowlerc-20). I ran into it there at the beginning of my career in the 1980s, and it has been a thought-provoking companion ever since.
+The source for Conway's law is [an article](https://www.melconway.com/Home/Committees_Paper.html) written by Melvin Conway in 1968. It was published by Datamation, one of the most important journals for the software industry at that time. It was later dubbed "Conway's Law" by Fred Brooks in his hugely influential book [The Mythical Man-Month](https://www.amazon.com/gp/product/0201835959/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201835959&linkCode=as2&tag=martinfowlerc-20). I ran into it there at the beginning of my career in the 1980s, and it has been a thought-provoking companion ever since.
+
+## Linked Sources
+
+- <https://en.wikipedia.org/wiki/Conway%27s_law>
+- [Famous laws of Software development](https://www.timsommer.be/famous-laws-of-software-development/) - Tim Sommer
+- [10 Laws of Software Engineering That People Ignore](https://www.indiehackers.com/post/10-laws-of-software-engineering-that-people-ignore-e3439176dd)
+- [hacker-laws > Conway's Law](https://github.com/dwmkerr/hacker-laws#conways-law)
+- [Conway's Law](https://martinfowler.com/bliki/ConwaysLaw.html)
+- [Conway's Law, DDD, and Microservices](https://ardalis.com/conways-law-ddd-and-microservices/)

@@ -2,16 +2,6 @@
 
 ALIAS: ST
 
-SOURCES:
-
-- [sort](https://perldoc.perl.org/functions/sort)
-- [Schwartzian transform](https://en.wikipedia.org/wiki/Schwartzian_transform)
-- [The History of the Schwartzian Transform](https://www.perl.com/article/the-history-of-the-schwartzian-transform/) - [brian d foy](brian-d-foy.md)
-- <https://www.slideshare.net/brian_d_foy/the-surprisingly-tense-history-of-the-schwartzian-transform>
-- <https://perl.plover.com/yak/hw1/Hardware-notes.html#Schwartzian_Transform>
-
----
-
 The **Schwartzian transform** is a technique used to improve the efficiency of [sorting](https://en.wikipedia.org/wiki/Sorting) a list of items. This [idiom](https://en.wikipedia.org/wiki/Programming_idiom) is appropriate for [comparison-based sorting](https://en.wikipedia.org/wiki/Comparison_sort) when the ordering is actually based on the ordering of a certain property (the *key*) of the elements, where computing that property is an **intensive operation** that should be performed a minimal number of times.
 
 The Schwartzian transform is a version of a [Lisp](https://en.wikipedia.org/wiki/Lisp_programming_language) idiom known as **decorate-sort-undecorate**, which avoids recomputing the sort keys by temporarily associating them with the input items. This approach is similar to [Memoization](Memoization.md), which avoids repeating the calculation of the key corresponding to a specific input value.
@@ -152,3 +142,11 @@ ls -l | sort -n +4 | awk '{print $NF}'
 # Sort output of SOMETHING from most frequent to least
 # SOMETHING | uniq -c | sort -nr | awk '{$1=""; print}'
 ```
+
+## Linked Sources
+
+- [sort](https://perldoc.perl.org/functions/sort)
+- [Schwartzian transform](https://en.wikipedia.org/wiki/Schwartzian_transform)
+- [The History of the Schwartzian Transform](https://www.perl.com/article/the-history-of-the-schwartzian-transform/) - [brian d foy](brian-d-foy.md)
+- <https://www.slideshare.net/brian_d_foy/the-surprisingly-tense-history-of-the-schwartzian-transform>
+- <https://perl.plover.com/yak/hw1/Hardware-notes.html#Schwartzian_Transform>

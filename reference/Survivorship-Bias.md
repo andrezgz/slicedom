@@ -2,16 +2,6 @@
 
 ALIAS: Survival bias, Sesgo del superviviente, Sesgo de supervivencia
 
-SOURCES:
-
-- <https://en.wikipedia.org/wiki/Survivorship_bias>
-- [What you need to know about success stories - survivorship bias](https://cognitiontoday.com/what-you-need-to-know-about-success-stories-survivorship-bias/) - Aditya Shukla
-- [21 Mind Traps : The Ultimate Guide to your most common Thinking errors (Part II)](https://www.youtube.com/watch?v=6G1F1KVeiNA)
-
----
-
-**Survivorship bias** is the logical error of concentrating on data about the people or things that made it past some selection process and overlooking/ignoring those that did not, causing a biased view of the truth, not thinking that it is representative of only a subset of the population.
-
 More simply, we tend to focus on those things that survived a process and overlook ones that failed. This can lead to some *false conclusions*:
 
 - overly optimistic beliefs because failures are ignored, such as when companies that no longer exist are excluded from analyses of financial performance
@@ -32,7 +22,7 @@ We don't know what (100-X)% people did, perhaps the same thing as X, perhaps som
 
 ## Examples
 
-![](../attachments/xkcd-1827-Survivorship-Bias.png)
+![](../attachments/xkcd-1827-survivorship-bias.png)
 
 [Survivorship Bias - XKCD Comic](https://xkcd.com/1827/)
 
@@ -53,3 +43,9 @@ He realized that planes that returned from battle had bullet holes all over them
 Abraham Wald noticed that planes with bullet holes had some hidden information in them. The ones that had holes at particular spots did not collapse in battle. The planes that did not return must've had bullet holes in some other spots that led to critical damage and thus the collapse of the plane. <mark>The pattern of bullet holes in survivor planes showed where the plane can get hit and survive</mark>.
 
 So they built armor for places where the survivor planes did not take bullet hits. They knew those were the critical points. They reinforced the unscathed parts of the survivor planes.
+
+## Linked Sources
+
+- <https://en.wikipedia.org/wiki/Survivorship_bias>
+- [What you need to know about success stories - survivorship bias](https://cognitiontoday.com/what-you-need-to-know-about-success-stories-survivorship-bias/) - Aditya Shukla
+- [21 Mind Traps : The Ultimate Guide to your most common Thinking errors (Part II)](https://www.youtube.com/watch?v=6G1F1KVeiNA)

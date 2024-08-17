@@ -1,16 +1,5 @@
 # Philosophy of Software Design
 
-SOURCES:
-
-- [A Philosophy of Software Design - Talks at Google](https://www.youtube.com/watch?v=bmSAYlu0NcY) - John Ousterhout
-- [Can Great Programmers Be Taught?](https://cs.stanford.edu/~hq6/files/Great%20Programmers%20Long%20(Aug).pdf) - John Ousterhout
-    - [Can-Great-Programmers-Be-Taught-2018-08-28.pdf](../attachments/Can-Great-Programmers-Be-Taught-2018-08-28.pdf)
-- A Philosophy of Software Design - John Ousterhout - 2018
-    - <https://github.com/rocky-191/Awesome-CS-Books/blob/master/SoftwareEngineering/Architecture/2018-John%20Ousterhout-A%20Philosophy%20of%20Software%20Design.pdf>
-    - [A-Philosophy-of-Software-Design-John-Ousterhout-2018.pdf](../attachments/A-Philosophy-of-Software-Design-John-Ousterhout-2018.pdf)
-
----
-
 ## Problem decomposition
 
 This is the most important thing in computer science: How do you take a complicated problem or system and chop it up into pieces that you can build relatively independently?
@@ -163,3 +152,12 @@ Ask yourself:
 Try and find a clean way of doing things. And ideally, in the best case, you'd like to end up where you would have ended up if you had built the whole system from scratch knowing what you know today.
 
 You know you can't always do that. Sometimes that would be a refactoring that's way beyond the scale of what you can do. So, again, I would just say ask yourself, am I doing *the most I possibly can*?
+
+## Linked Sources
+
+- [A Philosophy of Software Design - Talks at Google](https://www.youtube.com/watch?v=bmSAYlu0NcY) - John Ousterhout
+- [Can Great Programmers Be Taught?](https://cs.stanford.edu/~hq6/files/Great%20Programmers%20Long%20(Aug).pdf) - John Ousterhout
+    - [Can-Great-Programmers-Be-Taught-2018-08-28.pdf](../attachments/Can-Great-Programmers-Be-Taught-2018-08-28.pdf)
+- A Philosophy of Software Design - John Ousterhout - 2018
+    - <https://github.com/rocky-191/Awesome-CS-Books/blob/master/SoftwareEngineering/Architecture/2018-John%20Ousterhout-A%20Philosophy%20of%20Software%20Design.pdf>
+    - [A-Philosophy-of-Software-Design-John-Ousterhout-2018.pdf](../attachments/A-Philosophy-of-Software-Design-John-Ousterhout-2018.pdf)

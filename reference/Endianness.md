@@ -2,18 +2,6 @@
 
 ALIAS: big-endian, little-endian
 
-SOURCES:
-
-- <https://en.wikipedia.org/wiki/Endianness>
-- [Lilliput and Blefuscu](https://en.wikipedia.org/wiki/Lilliput_and_Blefuscu)
-- [Big and Little Endian](https://web.archive.org/web/20170227191944/http://www.cs.umd.edu:80/class/sum2003/cmsc311/Notes/Data/endian.html)
-- [Big Endian vs Little Endian](https://www.youtube.com/watch?v=JrNF0KRAlyo)
-- [Big and Little Endian inside / out](https://www.youtube.com/watch?v=oBSuXP-1Tc0)
-
----
-
-**Endianness** is the byte order of a word of digital data in computer memory or data communication which is identified by describing the impact of the "first" bytes, meaning at the smallest address or sent first.
-
 ## Byte orders
 
 Endianness is primarily expressed as:
@@ -41,6 +29,12 @@ Some systems may have even *weirder byte orders* called mid-endian, middle-endia
 The integer formats `s`, `S`, `i`, `I`, `l`, `L`, `j`, and `J` are inherently non-portable between processors and operating systems because they obey native byteorder and endianness.
 
 For portably packed integers, either use the formats `n`, `N`, `v`, and `V` or else use the `>` and `<` modifiers.
+
+### Storable
+
+The [Storable](https://perldoc.perl.org/Storable) package brings persistence to Perl data structures containing SCALAR, ARRAY, HASH or REF objects, i.e. anything that can be conveniently stored to disk and retrieved at a later time.
+
+Use `nstore` for storing data in network order to allow easy sharing across multiple platforms, or when storing on a socket known to be remotely connected. At retrieval time, data will be correctly restored without knowing whether you're restoring from native or network ordered data. Double values are stored stringified to ensure portability as well, at the slight risk of loosing some precision in the last decimals.
 
 ### Determine your system endianness
 
@@ -84,3 +78,11 @@ The novel further describes an intra-Lilliputian quarrel over **the practice of 
 ### English Catholicism and Protestantism
 
 The Big-Endian/Little-Endian controversy reflects, in a much simplified form, **British quarrels over religion**. Less than 200 years previously, England had been a Catholic (Big-Endian) country; but a series of reforms beginning in the 1530s under King Henry VIII (reigned 1509–1547), Edward VI (1547–1553), and Queen Elizabeth I (1558–1603) had converted most of the country to Protestantism (Little-Endianism), in the episcopalian form of the Church of England. At the same time, revolution and reform in Scotland (1560) had also converted that country to Presbyterian Protestantism, which led to fresh difficulties when England and Scotland were united under one ruler, James I (1603–1625).
+
+## Linked Sources
+
+- <https://en.wikipedia.org/wiki/Endianness>
+- [Lilliput and Blefuscu](https://en.wikipedia.org/wiki/Lilliput_and_Blefuscu)
+- [Big and Little Endian](https://web.archive.org/web/20170227191944/http://www.cs.umd.edu:80/class/sum2003/cmsc311/Notes/Data/endian.html)
+- [Big Endian vs Little Endian](https://www.youtube.com/watch?v=JrNF0KRAlyo)
+- [Big and Little Endian inside / out](https://www.youtube.com/watch?v=oBSuXP-1Tc0)

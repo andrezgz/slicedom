@@ -1,14 +1,8 @@
 # Linux - screen
 
-SOURCES:
-
-- [How To Use Linux ScreenLinuxize](https://linuxize.com/post/how-to-use-linux-screen/)
-- [How to Use Linux's screen Command](https://www.howtogeek.com/662422/how-to-use-linuxs-screen-command/)
-
 RELATED:
 
 - [Linux - tmux](Linux-tmux.md)
-
 
 ---
 
@@ -108,3 +102,8 @@ Al crearse una ventana, se establece una región
 - `Ctrl+a` `tab` Cambiar el foco a la siguiente región
 - `Ctrl+a` `Q` Cerrar todas las regiones a excepción de la actual
 - `Ctrl+a` `X` Cerrar la región actual
+
+## Linked Sources
+
+- [How To Use Linux ScreenLinuxize](https://linuxize.com/post/how-to-use-linux-screen/)
+- [How to Use Linux's screen Command](https://www.howtogeek.com/662422/how-to-use-linuxs-screen-command/)

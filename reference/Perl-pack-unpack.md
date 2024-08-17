@@ -1,20 +1,5 @@
 # Perl - pack & unpack
 
-SOURCES:
-
-- <https://stackoverflow.com/questions/3857499/when-would-you-use-unpackh-or-packh>
-- <https://perldoc.perl.org/functions/pack.html>
-- <https://perldoc.perl.org/functions/unpack.html>
-- <https://metacpan.org/pod/distribution/perl/pod/perlpacktut.pod>
-- RC4 cipher example
-    - <https://stackoverflow.com/questions/10538253/in-perl-while-using-rc4-i-am-unable-to-get-back-the-encrypted-text>
-    - <https://stackoverflow.com/questions/10085621/issue-with-encrypting-password-using-cryptrc4>
-    - <http://graphcomp.com/info/crypt/rc4.htm>
-- CGI download file
-    - <https://www.nu42.com/2012/05/file-download-cgi-script-in-perl.html>
-
----
-
 ## pack TEMPLATE,LIST
 
 Converts values to a byte sequence containing representations according to a given specification, the "template" argument.
@@ -456,3 +441,16 @@ perl -e "print join '.', unpack CCCC, pack N, shift;" 3232235521 #prints 192.168
 Image obtained from [Converting IP Addresses To And From Integer Values With ColdFusion](https://www.bennadel.com/blog/1830-converting-ip-addresses-to-and-from-integer-values-with-coldfusion.htm)
 
 [ip2dec2ip.pl](../attachments/ip2dec2ip.pl)
+
+## Linked Sources
+
+- <https://stackoverflow.com/questions/3857499/when-would-you-use-unpackh-or-packh>
+- <https://perldoc.perl.org/functions/pack.html>
+- <https://perldoc.perl.org/functions/unpack.html>
+- <https://metacpan.org/pod/distribution/perl/pod/perlpacktut.pod>
+- RC4 cipher example
+    - <https://stackoverflow.com/questions/10538253/in-perl-while-using-rc4-i-am-unable-to-get-back-the-encrypted-text>
+    - <https://stackoverflow.com/questions/10085621/issue-with-encrypting-password-using-cryptrc4>
+    - <http://graphcomp.com/info/crypt/rc4.htm>
+- CGI download file
+    - <https://www.nu42.com/2012/05/file-download-cgi-script-in-perl.html>

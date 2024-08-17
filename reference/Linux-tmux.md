@@ -1,13 +1,5 @@
 # Linux - tmux
 
-SOURCES:
-
-- [Tmux Cheat Sheet & Quick Reference](https://tmuxcheatsheet.com/)
-- [tmux(1): terminal multiplexer](https://linux.die.net/man/1/tmux)
-- [tmux](https://hpc.nmsu.edu/discovery/tutorials/tmux/)
-- [How to Use tmux on Linux (and Why It's Better Than Screen)](https://www.howtogeek.com/671422/how-to-use-tmux-on-linux-and-why-its-better-than-screen/)
-- [Organized Development With tmux](https://www.youtube.com/watch?v=o7Dg1kmjhfQ) - Doug Bell
-
 RELATED:
 
 - [Linux - screen](Linux-screen.md)
@@ -188,3 +180,11 @@ Comandos
 ## Tools
 
 - [tmuxinator/tmuxinator: Manage complex tmux sessions easily](https://github.com/tmuxinator/tmuxinator)
+
+## Linked Sources
+
+- [Tmux Cheat Sheet & Quick Reference](https://tmuxcheatsheet.com/)
+- [tmux(1): terminal multiplexer](https://linux.die.net/man/1/tmux)
+- [tmux](https://hpc.nmsu.edu/discovery/tutorials/tmux/)
+- [How to Use tmux on Linux (and Why It's Better Than Screen)](https://www.howtogeek.com/671422/how-to-use-tmux-on-linux-and-why-its-better-than-screen/)
+- [Organized Development With tmux](https://www.youtube.com/watch?v=o7Dg1kmjhfQ) - Doug Bell

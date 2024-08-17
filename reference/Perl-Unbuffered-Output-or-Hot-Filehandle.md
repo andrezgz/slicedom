@@ -1,15 +1,8 @@
 # Perl - Unbuffered Output or Hot Filehandle
 
-SOURCES:
+RELATED:
 
-- <https://www.perlmonks.org/?node_id=280025>
-- <https://stackoverflow.com/questions/33812618/can-you-force-flush-output-in-perl>
-- [Suffering from Buffering?](https://perl.plover.com/FAQs/Buffering.html)
-- [Perl Cookbook - 7.12. Flushing Output](https://www.cs.ait.ac.th/~on/O/oreilly/perl/cookbook/ch07_13.htm)
-- [Select](https://perldoc.perl.org/5.8.8/functions/select.html)
-    - [Programming Perl - select (output filehandle)](https://www.cs.ait.ac.th/~on/O/oreilly/perl/prog/ch03_134.htm)
-- [perlvar - Perl predefined variables](https://perldoc.perl.org/5.8.8/perlvar.html)
-    - [Programming Perl - Special Variables](https://www.cs.ait.ac.th/~on/O/oreilly/perl/prog/ch02_09.htm#)
+- [Perl - select](Perl-select.md)
 
 ---
 
@@ -18,6 +11,8 @@ For efficiency, Perl does not read or write the disk or the network when you ask
 When you write data to a file with print, the data doesn't normally go into the file right away. Instead, it goes into a buffer. When the buffer is full, Perl writes all the data in the buffer at once. This is called **flushing the buffer**. Here the performance gain is even bigger than for reading, about 60%.
 
 Usually this is what you want, but sometimes the buffering causes problems. Typical problems include communicating with conversational network services and writing up-to-date log files. In such circumstances, you would like to disable the buffering.
+
+Perl's `print` function does not support truly unbuffered output - a physical write for each individual character. Instead, it supports *command buffering*, in which one physical write is made after every separate output command. It prints to the currently selected handle when no handle is provided.
 
 ## Perlvar `$|`
 
@@ -152,30 +147,13 @@ print "now you do";
 # if limit > 256*N, buffer flushed, content from 256*N+1 is printed
 ```
 
-## Related builtins
+## Linked Sources
 
-### print()
-
-Perl's print function does not support truly unbuffered output - a physical write for each individual character. Instead, it supports *command buffering*, in which one physical write is made after every separate output command.
-
-It prints to the currently selected handle when no handle is provided.
-
-### select()
-
-Returns the currently selected filehandle.
-
-#### select(FILEHANDLE)
-
-Sets the current default filehandle for output, if FILEHANDLE is supplied.
-
-- A [write](https://perldoc.perl.org/5.8.8/functions/write.html) or a [print](https://perldoc.perl.org/5.8.8/functions/print.html) without a filehandle will default to this FILEHANDLE.
-- References to variables related to output will refer to this output channel.
-
-#### select(RBITS,WBITS,EBITS,TIMEOUT)
-
-Any of the bit masks can also be undef. The timeout, if specified, is in seconds, which may be fractional.
-
-```perl
-#You can effect a sleep of 250 milliseconds this way
-select(undef, undef, undef, 0.25);
-```
+- <https://www.perlmonks.org/?node_id=280025>
+- <https://stackoverflow.com/questions/33812618/can-you-force-flush-output-in-perl>
+- [Suffering from Buffering?](https://perl.plover.com/FAQs/Buffering.html)
+- [Perl Cookbook - 7.12. Flushing Output](https://www.cs.ait.ac.th/~on/O/oreilly/perl/cookbook/ch07_13.htm)
+- [Select](https://perldoc.perl.org/5.8.8/functions/select.html)
+    - [Programming Perl - select (output filehandle)](https://www.cs.ait.ac.th/~on/O/oreilly/perl/prog/ch03_134.htm)
+- [perlvar - Perl predefined variables](https://perldoc.perl.org/5.8.8/perlvar.html)
+    - [Programming Perl - Special Variables](https://www.cs.ait.ac.th/~on/O/oreilly/perl/prog/ch02_09.htm#)

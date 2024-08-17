@@ -1,13 +1,6 @@
 # Orcish Maneuver
 
-ALIAS: OM, Orcish 
-
-SOURCES:
-
-- <https://perl.plover.com/yak/hw1/Hardware-notes.html#_Orcish_Maneuver_>
-- <https://www.nntp.perl.org/group/perl.beginners/2001/05/msg1250.html>
-
----
+ALIAS: OM, Orcish Manoeuvre
 
 There is an inline cache technique called the **Orcish Maneuver**, a clever pun on [Orc](http://lotr.wikia.com/wiki/Orcs) (perhaps) and "OR Cache". Joseph Hall (author of "Effective Perl Programming") coined the term.
 
@@ -43,3 +36,8 @@ It has some minor efficiency flaws:
 Except when the need to avoid reading the data twice is critical, <mark>the explicit cached sort is always slightly faster than the OM</mark>.
 
 It is simpler than [Schwartzian Transform](Schwartzian-Transform.md) and <mark>faster, if the list contains duplicates</mark>.
+
+## Linked Sources
+
+- <https://perl.plover.com/yak/hw1/Hardware-notes.html#_Orcish_Maneuver_>
+- <https://www.nntp.perl.org/group/perl.beginners/2001/05/msg1250.html>
