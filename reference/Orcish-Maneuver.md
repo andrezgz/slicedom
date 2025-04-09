@@ -24,6 +24,17 @@ my @sorted = sort {
 } @old_array;
 ```
 
+It is better using the *defined-or* operator if empty string or 0 values are returned by the function:
+
+```perl
+my %cache;
+my @sorted = sort {
+    ( $cache{$a} //= function($a) )
+    <=>
+    ( $cache{$b} //= function($b) )
+} @old_array;
+```
+
 ## CAVEATS
 
 It has some minor efficiency flaws:

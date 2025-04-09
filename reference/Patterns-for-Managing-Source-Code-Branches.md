@@ -707,4 +707,4 @@ Branching is easy, merging is harder. Branching is a powerful technique, but it 
 
 ## Linked Sources
 
-- [Patterns for Managing Source Code Branches](https://martinfowler.com/articles/branching-patterns.html) - [Martin Fowler](Martin-Fowler.md)
+- [Patterns for Managing Source Code Branches](https://martinfowler.com/articles/branching-patterns.html) - Martin Fowler

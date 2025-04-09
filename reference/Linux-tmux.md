@@ -188,3 +188,4 @@ Comandos
 - [tmux](https://hpc.nmsu.edu/discovery/tutorials/tmux/)
 - [How to Use tmux on Linux (and Why It's Better Than Screen)](https://www.howtogeek.com/671422/how-to-use-tmux-on-linux-and-why-its-better-than-screen/)
 - [Organized Development With tmux](https://www.youtube.com/watch?v=o7Dg1kmjhfQ) - Doug Bell
+- [Tmux in 100 Second](https://www.youtube.com/watch?v=vtB1J_zCv8I)

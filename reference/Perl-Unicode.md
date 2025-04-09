@@ -60,7 +60,7 @@ In Perl at least, everything (substr, length, index, reverse...) works on the le
 
 Even seemingly innocuous things like `printf "%-10s", $str` breaks completely for combining characters, double-width characters (e.g. Chinese/Japanese) or zero-width characters.
 
-Fortunately Perl provides the `\X` regular expression metachar which matches exactly one 'extended grapheme cluster', i.e. what a user would consider a character to be.
+Fortunately Perl provides the `\X` regular expression metachar which matches exactly one [Extended Grapheme Cluster](Extended-Grapheme-Cluster.md), i.e. what a user would consider a character to be.
 
 A more robust solution is to install [Unicode::GCString](https://metacpan.org/module/Unicode::GCString):
 
@@ -127,9 +127,7 @@ If you are checking for whitespace, then you should choose between `\h` and `\v`
 
 You should use `\R` for a line boundary. It matches any Unicode linebreak sequence (including `\n`, `\r\n` and six others)
 
-`\p, \P`
-
-Match any codepoint possessing (or not possessing) a Unicode property.
+`\p, \P`: Match any codepoint possessing (or not possessing) a Unicode property.
 
 Common ones are `\pL` (Letter), `\pU` (Uppercase), `\pS` (Symbol), or even `\p{script=Latin}`, `\p{East_Asian_Width=Wide}`, `\p{Numeric_Value=4}`.
 
@@ -137,9 +135,7 @@ See [perluniprops](http://perldoc.perl.org/perluniprops.html) for a big list.
 
 Built-in character classes such as `\w`, `\b`, `\s` and `\d` are Unicode-aware since Perl 5.6 (though you need to make sure your string or pattern has the UTF8 flag on!) Disable this with the `/a` flag (see [perlre](http://perldoc.perl.org/perlre.html#Character-set-modifiers)).
 
-`\X`
-
-Match an extended grapheme cluster, which is basically a user-visible 'character'. Use it instead of `.` unless you want codepoints.
+`\X`: Match an extended grapheme cluster, which is basically a user-visible 'character'. Use it instead of `.` unless you want codepoints.
 
 E.g. to match a vowel with optional diacritics or marks ([source](http://www.perl.com/pub/2012/05/perlunicook-match-unicode-grapheme-cluster-in-regex.html)) :
 

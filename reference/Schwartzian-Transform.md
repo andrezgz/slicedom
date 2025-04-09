@@ -147,6 +147,6 @@ ls -l | sort -n +4 | awk '{print $NF}'
 
 - [sort](https://perldoc.perl.org/functions/sort)
 - [Schwartzian transform](https://en.wikipedia.org/wiki/Schwartzian_transform)
-- [The History of the Schwartzian Transform](https://www.perl.com/article/the-history-of-the-schwartzian-transform/) - [brian d foy](brian-d-foy.md)
+- [The History of the Schwartzian Transform](https://www.perl.com/article/the-history-of-the-schwartzian-transform/) - brian d foy
 - <https://www.slideshare.net/brian_d_foy/the-surprisingly-tense-history-of-the-schwartzian-transform>
 - <https://perl.plover.com/yak/hw1/Hardware-notes.html#Schwartzian_Transform>
