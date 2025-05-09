@@ -46,7 +46,7 @@ my @sorted = $collator->sort(@array);
 $collator->cmp($word, $another_word); # -> -1, 0 or 1
 ```
 
--> [Perl alphabetic sort done right](Perl-alphabetic-sort-done-right.md)
+-> Perl alphabetic sort done right
 
 ## Unicode and internationalised domain names
 
@@ -60,7 +60,7 @@ In Perl at least, everything (substr, length, index, reverse...) works on the le
 
 Even seemingly innocuous things like `printf "%-10s", $str` breaks completely for combining characters, double-width characters (e.g. Chinese/Japanese) or zero-width characters.
 
-Fortunately Perl provides the `\X` regular expression metachar which matches exactly one [Extended Grapheme Cluster](Extended-Grapheme-Cluster.md), i.e. what a user would consider a character to be.
+Fortunately Perl provides the `\X` regular expression metachar which matches exactly one Extended Grapheme Cluster, i.e. what a user would consider a character to be.
 
 A more robust solution is to install [Unicode::GCString](https://metacpan.org/module/Unicode::GCString):
 
@@ -942,7 +942,7 @@ In other languages, see documentation to see which definition of `\w` applies.
 
 ### Code that assumes Perl uses UTF‑8 internally is wrong. Code that assumes Perl code points are limited to 0x10_FFFF is wrong
 
--> [Perl - UTF-8 vs utf8](Perl-UTF-8-vs-utf8.md)
+-> Perl - UTF-8 vs utf8
 
 - Perl uses a [very permissive variant](http://perldoc.perl.org/Encode.html#UTF-8-vs.-utf8-vs.-UTF8) of UTF-8 it calls 'utf8' which allows very high codepoints (beyond 0x10_FFFF) and illegal characters or sequences.
 - Perl may use ISO-8859-1 if the string's UTF8 flag is unset.
@@ -1008,7 +1008,7 @@ Hangul components aren't in `\p{Mark}`, for example. There are also `\p{Grapheme
 
 ## Boilerplate for Unicode-Aware Code
 
--> [Boilerplate](Boilerplate.md)
+-> Boilerplate
 
 1. Set your the env variable `PERL_UNICODE="AS"`. This makes all Perl scripts decode `@ARGV` as UTF‑8 strings, and sets the encoding of all three of stdin, stdout, and stderr to UTF‑8. Both these are global effects, not lexical ones.
 2. At the top of your source file (program, module, library, do), prominently assert you are running **perl version 5.12 or better**:

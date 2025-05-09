@@ -255,9 +255,9 @@ The rule of thumb is that ["everyone commits to the mainline every day"](https:/
 Developers using Continuous Integration need to get used to the idea of reaching frequent integration points with a partially built feature. <mark>They need to consider how to do this without exposing a partially built feature in the running system.</mark>
 
 - Hiding a partially built feature by hooking up a [Keystone Interface](https://martinfowler.com/bliki/KeystoneInterface.html) last is often an effective technique.
-- If there's no way to easily hide the partial feature, we can use [Feature flags](Feature-flags.md) (or feature toggles). As well as hiding a partially built feature, such flags also allow the feature to be selectively revealed to a subset of users - often handy for a slow roll-out of a new feature.
+- If there's no way to easily hide the partial feature, we can use Feature flags (or feature toggles). As well as hiding a partially built feature, such flags also allow the feature to be selectively revealed to a subset of users - often handy for a slow roll-out of a new feature.
 
-Those who use Continuous Integration need [Self Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html), so that there's confidence that having partially built features in mainline doesn't increase the chance of bugs. With this approach, developers write tests for the partially built features as they are writing that feature code and commit both feature code and tests into mainline together (perhaps using [Test-Driven Development](Test-Driven-Development.md)).
+Those who use Continuous Integration need [Self Testing Code](https://martinfowler.com/bliki/SelfTestingCode.html), so that there's confidence that having partially built features in mainline doesn't increase the chance of bugs. With this approach, developers write tests for the partially built features as they are writing that feature code and commit both feature code and tests into mainline together (perhaps using Test-Driven Development).
 
 In terms of a local repo, <mark>most people who use Continuous Integration don't bother with a separate local branch to work on</mark>. It's usually straightforward to commit to the local master and perform mainline integration when done. However it's perfectly fine to open a feature branch and do the work there, if developers prefer it, integrating back into the local master and mainline at frequent intervals. <mark>The difference between feature branching and continuous integration isn't whether or not there's a feature branch, but when developers integrate with mainline.</mark>
 
@@ -317,7 +317,7 @@ In this context, **Feature Branching** makes a whole lot of sense. If someone is
 
 *Every commit to mainline is peer-reviewed before the commit is accepted.*
 
-[Code Review](Code-Review.md) has long been encouraged as a way of improving code quality, improving modularity, readability, and removing defects. Despite this, commercial organizations often found it difficult to fit into software development workflows. The open-source world, however, widely adopted the idea that contributions to a project should be reviewed before accepting them onto the project's mainline. A workflow like this fits particularly well with the GitHub mechanism of pull-requests.
+Code Review has long been encouraged as a way of improving code quality, improving modularity, readability, and removing defects. Despite this, commercial organizations often found it difficult to fit into software development workflows. The open-source world, however, widely adopted the idea that contributions to a project should be reviewed before accepting them onto the project's mainline. A workflow like this fits particularly well with the GitHub mechanism of pull-requests.
 
 Scarlett finishes a hunk of work that she wishes to integrate. As she does [Mainline Integration](https://martinfowler.com/articles/branching-patterns.html#mainline-integration) once she has a successful build, but before she pushes to mainline, she sends her commit out for review. Some other member of the team, say Violet, then does a code review on the commit. If she has problems with the commit, she makes some comments and there's some back-and-forth until both Scarlett and Violet are happy. Only once they are done is the commit placed on mainline.
 
@@ -327,7 +327,7 @@ Developing the discipline for timely Reviewed Commits is important. If a develop
 
 <mark>Reviewed Commits always introduces some latency into the integration process, encouraging a lower integration frequency.</mark>
 
-[Pair Programming](Pair-Programming.md) offers a continuous code review process, with a faster feedback cycle than waiting for a code review. (Like Continuous Integration and Refactoring, it's one of the original practices of [Extreme Programming](https://martinfowler.com/bliki/ExtremeProgramming.html)).
+Pair Programming offers a continuous code review process, with a faster feedback cycle than waiting for a code review. (Like Continuous Integration and Refactoring, it's one of the original practices of [Extreme Programming](https://martinfowler.com/bliki/ExtremeProgramming.html)).
 
 Many teams that use reviewed commits don't do them quickly enough. The valuable feedback that they can offer then comes too late to be useful. At that point there's an awkward choice between a lot of rework, or accepting something that may work, but undermines the quality of the code-base.
 
@@ -569,7 +569,7 @@ Having multiple branches for new development adds complexity. We can achieve thi
 
 If there's a [Release-Ready Mainline](https://martinfowler.com/articles/branching-patterns.html#release-ready-mainline), there's no need for a release branch. With regular releases like this, there's still the option for developers to hold back a nearly-done feature for the next release by not pushing to the mainline if it's just before the regular release date. With [Continuous Integration](https://martinfowler.com/articles/branching-patterns.html#continuous-integration), folks can always delay placing the keystone or keep a feature flag turned off if they want a feature to wait for the next scheduled release.
 
--> [Feature flags](Feature-flags.md)
+-> Feature flags
 
 ### RELEASE PATTERN: Release-Ready Mainline
 
@@ -665,7 +665,7 @@ Branching approaches in terms of the patterns.
 
 ### POLICY BRANCHING: Git-flow
 
-[Git-Flow](Git-Flow.md) has become one of the most common branching policies that I've run into. It was [written by Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/) in 2010, appearing as git was getting popular.
+Git-Flow has become one of the most common branching policies that I've run into. It was [written by Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/) in 2010, appearing as git was getting popular.
 
 Git-Flow uses [Mainline](https://martinfowler.com/articles/branching-patterns.html#mainline), (calling it "develop") in a single "origin" repository. It uses [Feature Branching](https://martinfowler.com/articles/branching-patterns.html#feature-branching) to coordinate multiple developers. Developers are encouraged to use their personal repositories as [Collaboration Branch](https://martinfowler.com/articles/branching-patterns.html#collaboration-branch) to coordinate with other developers working in similar work.
 
@@ -685,7 +685,7 @@ GitHub Flow calls its mainline "master". Developers work with [Feature Branching
 
 ### POLICY BRANCHING: Trunk-Based Development
 
--> [Trunk-Based Development](Trunk-Based-Development.md)
+-> Trunk-Based Development
 
 Trunk-Based Development focuses on doing all work on [Mainline](https://martinfowler.com/articles/branching-patterns.html#mainline) (called "trunk", which is a common synonym for "mainline"), and thus avoiding any kind of long-lived branches. Smaller teams commit directly to mainline using [Mainline Integration](https://martinfowler.com/articles/branching-patterns.html#mainline-integration), larger teams may use short-lived [Feature Branching](https://martinfowler.com/articles/branching-patterns.html#feature-branching) where "short" means no more than a couple of days - which probably equates to [Continuous Integration](https://martinfowler.com/articles/branching-patterns.html#continuous-integration) in practice. Teams may use [Release Branch](https://martinfowler.com/articles/branching-patterns.html#release-branch) (called "branch for release") or [Release-Ready Mainline](https://martinfowler.com/articles/branching-patterns.html#release-ready-mainline) ("release from trunk").
 

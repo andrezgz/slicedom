@@ -4,7 +4,7 @@ ALIAS: ST
 
 The **Schwartzian transform** is a technique used to improve the efficiency of [sorting](https://en.wikipedia.org/wiki/Sorting) a list of items. This [idiom](https://en.wikipedia.org/wiki/Programming_idiom) is appropriate for [comparison-based sorting](https://en.wikipedia.org/wiki/Comparison_sort) when the ordering is actually based on the ordering of a certain property (the *key*) of the elements, where computing that property is an **intensive operation** that should be performed a minimal number of times.
 
-The Schwartzian transform is a version of a [Lisp](https://en.wikipedia.org/wiki/Lisp_programming_language) idiom known as **decorate-sort-undecorate**, which avoids recomputing the sort keys by temporarily associating them with the input items. This approach is similar to [Memoization](Memoization.md), which avoids repeating the calculation of the key corresponding to a specific input value.
+The Schwartzian transform is a version of a [Lisp](https://en.wikipedia.org/wiki/Lisp_programming_language) idiom known as **decorate-sort-undecorate**, which avoids recomputing the sort keys by temporarily associating them with the input items. This approach is similar to Memoization, which avoids repeating the calculation of the key corresponding to a specific input value.
 
 ## The Perl idiom
 

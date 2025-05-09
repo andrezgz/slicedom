@@ -210,7 +210,7 @@ my @data = unpack 's>*', $buf;
 
 ## Unicode
 
-The [UTF-8](UTF-8.md) encoding stores the most common (from a western point of view) characters in a single byte while encoding the rarer ones in three or more bytes. Perl uses UTF-8, internally, for most [Unicode](Unicode.md) strings.
+The UTF-8 encoding stores the most common (from a western point of view) characters in a single byte while encoding the rarer ones in three or more bytes. Perl uses UTF-8, internally, for most Unicode strings.
 
 ```perl
 # Equivalent to: $UTF8{Euro} = "\x{20ac}"; #Unicode codepoint number

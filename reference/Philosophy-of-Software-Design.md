@@ -15,7 +15,7 @@ Red flags are very specific things that, if you see this sort of behavior or pat
 
 ## Classes Should be Deep
 
-Reformulation of classic Parnas paper: [On the Criteria To Be Used in Decomposing Systems into Modules](On-the-Criteria-To-Be-Used-in-Decomposing-Systems-into-Modules.md)
+Reformulation of classic Parnas paper: On the Criteria To Be Used in Decomposing Systems into Modules
 
 ![](../attachments/Class-structure-Interface-Funcionality.png)
 
